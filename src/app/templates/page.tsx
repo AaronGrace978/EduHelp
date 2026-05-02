@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { Copy, Download, FileText, Check, Mail, Info, Printer } from "lucide-react";
-import { StateToggle } from "@/components/analyze/StateToggle";
 import {
   build504Letter,
   buildEvaluationLetter,
@@ -15,7 +14,11 @@ import {
   type ProfileInputs,
   type TemplateInputs,
 } from "@/lib/templates";
-import { STATE_NAMES, type StateCode } from "@/lib/eligibility/types";
+import {
+  STATE_NAMES,
+  SUPPORTED_STATES,
+  type StateCode,
+} from "@/lib/eligibility/types";
 import { cn } from "@/lib/cn";
 
 const TEMPLATE_TABS = [
@@ -29,6 +32,16 @@ const TEMPLATE_TABS = [
   { id: "due-process", label: "Due process", group: "Escalation" },
   { id: "profile", label: "1-page child profile", group: "Profile" },
 ] as const;
+
+const STATE_CITATIONS: Record<StateCode, string> = {
+  CO: "1 CCR 301-8 § 2.08",
+  CA: "5 CCR § 3030 / Ed. Code § 56333",
+  TX: "19 TAC § 89.1040",
+  NY: "8 NYCRR § 200.1(zz)",
+  FL: "Rule 6A-6.030xx, F.A.C.",
+  IL: "23 IAC § 226.75",
+  MA: "603 CMR 28.02(7)",
+};
 
 type TabId = (typeof TEMPLATE_TABS)[number]["id"];
 
@@ -187,14 +200,32 @@ export default function TemplatesPage() {
               State &amp; template
             </h2>
             <div className="mt-3">
-              <StateToggle
+              <label
+                htmlFor="template-state"
+                className="text-[10px] font-semibold uppercase tracking-wider text-slate-500"
+              >
+                State
+              </label>
+              <select
+                id="template-state"
                 value={state}
-                onChange={(s) => {
+                onChange={(e) => {
+                  const s = e.target.value as StateCode;
                   setState(s);
                   update("state", s);
                   updateProfile("state", s);
                 }}
-              />
+                className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+              >
+                {SUPPORTED_STATES.map((code) => (
+                  <option key={code} value={code}>
+                    {STATE_NAMES[code]} ({code})
+                  </option>
+                ))}
+              </select>
+              <p className="mt-1.5 text-xs text-slate-500">
+                Uses {STATE_CITATIONS[state]} for {STATE_NAMES[state]} citations.
+              </p>
             </div>
             <div className="mt-4">
               {(["Initial", "Escalation", "Profile"] as const).map((group) => (

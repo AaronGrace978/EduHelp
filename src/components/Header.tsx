@@ -75,7 +75,7 @@ export function Header() {
             GitHub
           </a>
           <Link href="/analyze" className="btn-primary px-4 py-2 text-sm">
-            Start free
+            Analyze documents
           </Link>
         </div>
       </div>
