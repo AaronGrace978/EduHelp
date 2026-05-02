@@ -3,20 +3,33 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Loader2, Sparkles, Target, Brain } from "lucide-react";
-import { StateToggle } from "@/components/analyze/StateToggle";
 import {
   loadSettings,
   settingsToHeaders,
   hasAnyKey,
   type ClientAISettings,
 } from "@/lib/client-settings";
-import type { StateCode } from "@/lib/eligibility/types";
+import {
+  STATE_NAMES,
+  SUPPORTED_STATES,
+  type StateCode,
+} from "@/lib/eligibility/types";
 
 const SAMPLE = `Reading: By the end of the IEP year, given grade-level text, [Student] will improve reading comprehension.
 
 Math: [Student] will work on math facts and improve calculation accuracy.
 
 Behavior: [Student] will reduce disruptive classroom behaviors.`;
+
+const STATE_CITATIONS: Record<StateCode, string> = {
+  CO: "1 CCR 301-8 § 2.08",
+  CA: "5 CCR § 3030 / Ed. Code § 56333",
+  TX: "19 TAC § 89.1040",
+  NY: "8 NYCRR § 200.1(zz)",
+  FL: "Rule 6A-6.030xx, F.A.C.",
+  IL: "23 IAC § 226.75",
+  MA: "603 CMR 28.02(7)",
+};
 
 export default function GoalsPage() {
   const [state, setState] = useState<StateCode>("CO");
@@ -83,7 +96,27 @@ export default function GoalsPage() {
         <form onSubmit={onSubmit} className="card lg:col-span-5 lg:sticky lg:top-24 lg:self-start">
           <h2 className="text-base font-semibold text-slate-900">State</h2>
           <div className="mt-3">
-            <StateToggle value={state} onChange={setState} />
+            <label
+              htmlFor="goals-state"
+              className="text-[10px] font-semibold uppercase tracking-wider text-slate-500"
+            >
+              State
+            </label>
+            <select
+              id="goals-state"
+              value={state}
+              onChange={(e) => setState(e.target.value as StateCode)}
+              className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+            >
+              {SUPPORTED_STATES.map((code) => (
+                <option key={code} value={code}>
+                  {STATE_NAMES[code]} ({code})
+                </option>
+              ))}
+            </select>
+            <p className="mt-1.5 text-xs text-slate-500">
+              Reviews goals using {STATE_NAMES[state]} context ({STATE_CITATIONS[state]}).
+            </p>
           </div>
 
           <h2 className="mt-6 text-base font-semibold text-slate-900">

@@ -12,7 +12,6 @@ import {
   Printer,
   Download,
 } from "lucide-react";
-import { StateToggle } from "@/components/analyze/StateToggle";
 import { Dropzone } from "@/components/analyze/Dropzone";
 import { ResultView } from "@/components/analyze/ResultView";
 import { ChatPanel } from "@/components/analyze/ChatPanel";
@@ -36,6 +35,16 @@ interface AnalyzeResponse {
   files: { name: string; size: number; type: string; chars: number; scanned: boolean }[];
   excerpt: string;
 }
+
+const STATE_CITATIONS: Record<StateCode, string> = {
+  CO: "1 CCR 301-8 § 2.08",
+  CA: "5 CCR § 3030 / Ed. Code § 56333",
+  TX: "19 TAC § 89.1040",
+  NY: "8 NYCRR § 200.1(zz)",
+  FL: "Rule 6A-6.030xx, F.A.C.",
+  IL: "23 IAC § 226.75",
+  MA: "603 CMR 28.02(7)",
+};
 
 export default function AnalyzePage() {
   return (
@@ -199,7 +208,27 @@ function AnalyzePageInner() {
             1. Choose your state
           </h2>
           <div className="mt-3">
-            <StateToggle value={state} onChange={setState} />
+            <label
+              htmlFor="analyze-state"
+              className="text-[10px] font-semibold uppercase tracking-wider text-slate-500"
+            >
+              State
+            </label>
+            <select
+              id="analyze-state"
+              value={state}
+              onChange={(e) => setState(e.target.value as StateCode)}
+              className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+            >
+              {SUPPORTED_STATES.map((code) => (
+                <option key={code} value={code}>
+                  {STATE_NAMES[code]} ({code})
+                </option>
+              ))}
+            </select>
+            <p className="mt-1.5 text-xs text-slate-500">
+              Uses {STATE_CITATIONS[state]} for {STATE_NAMES[state]} eligibility checks.
+            </p>
           </div>
 
           <h2 className="mt-6 text-base font-semibold text-slate-900">

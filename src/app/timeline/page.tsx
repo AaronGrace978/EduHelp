@@ -3,7 +3,6 @@
 import { Suspense, useMemo, useState } from "react";
 import Link from "next/link";
 import { Calendar, Sparkles, Download, Info } from "lucide-react";
-import { StateToggle } from "@/components/analyze/StateToggle";
 import {
   STATE_NAMES,
   SUPPORTED_STATES,
@@ -18,6 +17,16 @@ interface Milestone {
   description: string;
   citation: string;
 }
+
+const STATE_CITATIONS: Record<StateCode, string> = {
+  CO: "Colorado ECEA Rules § 4.02",
+  CA: "Cal. Ed. Code § 56344(a)",
+  TX: "19 TAC § 89.1011(c)",
+  NY: "8 NYCRR § 200.4",
+  FL: "Rule 6A-6.0331, F.A.C.",
+  IL: "23 IAC § 226.110(d)",
+  MA: "603 CMR 28.04(1)(c)",
+};
 
 const COMMON_BASE: Milestone[] = [
   {
@@ -257,7 +266,27 @@ function TimelineInner() {
         <div className="card lg:col-span-4 lg:sticky lg:top-24 lg:self-start">
           <h2 className="text-base font-semibold text-slate-900">State</h2>
           <div className="mt-3">
-            <StateToggle value={state} onChange={setState} />
+            <label
+              htmlFor="timeline-state"
+              className="text-[10px] font-semibold uppercase tracking-wider text-slate-500"
+            >
+              State
+            </label>
+            <select
+              id="timeline-state"
+              value={state}
+              onChange={(e) => setState(e.target.value as StateCode)}
+              className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-900 outline-none transition focus:border-brand-500 focus:ring-4 focus:ring-brand-100"
+            >
+              {SUPPORTED_STATES.map((code) => (
+                <option key={code} value={code}>
+                  {STATE_NAMES[code]} ({code})
+                </option>
+              ))}
+            </select>
+            <p className="mt-1.5 text-xs text-slate-500">
+              Uses {STATE_CITATIONS[state]} for {STATE_NAMES[state]} timelines.
+            </p>
           </div>
 
           <h2 className="mt-6 text-base font-semibold text-slate-900">
@@ -340,6 +369,3 @@ function TimelineInner() {
 function slugify(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
-
-// Avoid TS unused warning for SUPPORTED_STATES (kept for future picker).
-void SUPPORTED_STATES;
