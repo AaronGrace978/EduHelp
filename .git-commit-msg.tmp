@@ -1,0 +1,5 @@
+feat: Massachusetts (603 CMR 28) + v0.2.1
+
+- Add MA to eligibility types, engine (45 school-day consent clock), categories, completeness, templates, and resources/scrape targets.
+- Update landing, settings, resources, timeline, glossary, assistant prompt, Chatbot, Footer, README, and layout copy for seven states.
+- Include global EduHelp assistant (/api/assistant + Chatbot widget).

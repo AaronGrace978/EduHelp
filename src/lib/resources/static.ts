@@ -272,6 +272,50 @@ export const STATIC_RESOURCES: Record<StateCode, ResourceLink[]> = {
       category: "Government",
     },
   ],
+  MA: [
+    {
+      title: "Massachusetts DESE — Special Education",
+      url: "https://www.doe.mass.edu/sped/",
+      description:
+        "Official guidance on evaluation, Team meetings, IEPs, 603 CMR 28, and dispute resolution in Massachusetts.",
+      category: "Government",
+    },
+    {
+      title: "603 CMR 28 — Special Education Regulations",
+      url: "https://www.doe.mass.edu/lawsregs/603cmr28.html",
+      description:
+        "Full text of Massachusetts special-education regulations — eligibility, timelines, and procedural safeguards.",
+      category: "Government",
+    },
+    {
+      title: "Disability Law Center (Massachusetts)",
+      url: "https://www.dlc-ma.org",
+      description:
+        "Massachusetts protection & advocacy agency — free legal help with IEP / 504 disputes, restraint, and discrimination.",
+      category: "Legal Aid",
+    },
+    {
+      title: "Federation for Children with Special Needs",
+      url: "https://fcsn.org",
+      description:
+        "Boston-based parent center offering workshops, 1:1 support, and resources for families statewide.",
+      category: "Parent Center",
+    },
+    {
+      title: "Massachusetts Parent Teacher Association — Special Education",
+      url: "https://masspta.org",
+      description:
+        "Statewide PTA with special-education advocacy resources and local council connections.",
+      category: "Parent Center",
+    },
+    {
+      title: "Massachusetts Early Intervention (Part C)",
+      url: "https://www.mass.gov/info-details/early-intervention-program",
+      description:
+        "State overview of Massachusetts Early Intervention — evaluation and services for infants and toddlers with developmental concerns.",
+      category: "Government",
+    },
+  ],
 };
 
 export const SCRAPE_TARGETS: Record<StateCode, string[]> = {
@@ -289,4 +333,8 @@ export const SCRAPE_TARGETS: Record<StateCode, string[]> = {
   NY: ["https://www.nysed.gov/special-education"],
   FL: ["https://www.fldoe.org/academics/exceptional-student-edu/"],
   IL: ["https://www.isbe.net/Pages/Special-Education.aspx"],
+  MA: [
+    "https://www.doe.mass.edu/sped/",
+    "https://www.doe.mass.edu/lawsregs/603cmr28.html",
+  ],
 };

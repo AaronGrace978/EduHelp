@@ -162,7 +162,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     term: "P&A",
     aliases: ["Protection and Advocacy"],
     short: "Each state's Protection & Advocacy agency — provides free legal information and sometimes representation in special-education matters.",
-    long: "Every state has a P&A agency funded by federal dollars. They offer information, technical help, and limited legal representation for disability-related issues at school. Examples: Disability Law Colorado, Disability Rights California, Disability Rights Texas, Advocates for Children of New York, Disability Rights Florida, Equip for Equality (IL).",
+    long: "Every state has a P&A agency funded by federal dollars. They offer information, technical help, and limited legal representation for disability-related issues at school. Examples: Disability Law Colorado, Disability Rights California, Disability Rights Texas, Advocates for Children of New York, Disability Rights Florida, Equip for Equality (IL), Disability Law Center (MA).",
     category: "rights",
   },
   {

@@ -155,6 +155,24 @@ const STATE_MILESTONES: Record<StateCode, Milestone[]> = {
       citation: "23 IAC § 226.220(b)",
     },
   ],
+  MA: [
+    {
+      label: "Eligibility determination + proposed IEP (if eligible)",
+      daysFromConsent: 45,
+      unit: "school",
+      description:
+        "Massachusetts requires the district, after receiving signed consent, to determine eligibility and, if the student is eligible, to propose an IEP and services within 45 school days.",
+      citation: "603 CMR 28.04(1)(c)",
+    },
+    {
+      label: "IEP implementation (after Team accepts)",
+      daysFromConsent: 45,
+      unit: "school",
+      description:
+        "Once the Team reaches agreement (including parent consent to the IEP), services should start without undue delay — confirm the start date in writing.",
+      citation: "34 C.F.R. § 300.323(c); 603 CMR 28.06",
+    },
+  ],
 };
 
 export default function TimelinePage() {

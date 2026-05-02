@@ -1,6 +1,6 @@
 # EduHelp
 
-> AI-assisted special-education eligibility navigator for families in **Colorado, California, Texas, New York, Florida, and Illinois**.
+> AI-assisted special-education eligibility navigator for families in **Colorado, California, Texas, New York, Florida, Illinois, and Massachusetts**.
 
 EduHelp lets parents, caregivers, and advocates upload an evaluation, IEP/504 report, doctor's letter, or test results — even **photos of paper docs** and **scanned PDFs** — and instantly see:
 
@@ -13,7 +13,7 @@ EduHelp lets parents, caregivers, and advocates upload an evaluation, IEP/504 re
 - ready-to-send **letter templates** + a full **escalation kit** (IEE, mediation, state complaint, OCR complaint, due process)
 - a **1-page child profile** to share with new teachers and subs
 - a **glossary** of every special-ed acronym in plain English (with hover tooltips)
-- live **state DOE resources** for all 6 supported states
+- live **state DOE resources** for all 7 supported states
 - **ask-the-document chat** (your AI provider answers follow-up questions about the uploaded report)
 - **IEP goal SMART review** that scores each goal and suggests rewrites
 - **Spanish output toggle** for the AI narrative & chat
@@ -28,6 +28,7 @@ It runs **fully without any AI key** using a deterministic rules engine built on
 - New York `8 NYCRR § 200.1(zz)`
 - Florida Administrative Code Rule `6A-6.030xx`
 - Illinois `23 IAC § 226.75`
+- Massachusetts `603 CMR 28` (special education regulations)
 
 You can plug in **OpenAI**, **Anthropic**, **OpenRouter**, or **Ollama Cloud** as a drop-in narrative generator on top of the rules engine.
 
@@ -310,7 +311,7 @@ All findings include the underlying citation so families and advocates can verif
 
 ## What's new in v0.2.0
 
-- **Six states** — added Texas, New York, Florida, and Illinois rule sets alongside CO / CA
+- **Seven states** — Colorado, California, Texas, New York, Florida, Illinois, and Massachusetts (603 CMR 28) rule sets
 - **DOCX uploads** via `mammoth`
 - **Server-side OCR** for PNG / JPG / WEBP scans via `tesseract.js`
 - **Document completeness scanner** — flags missing assessment domains
@@ -333,7 +334,7 @@ All findings include the underlying citation so families and advocates can verif
 - Native installer via Tauri
 - Local-only / WebGPU AI mode (no cloud round-trip)
 - Full UI i18n (Spanish UI strings, not just AI output)
-- More states (AZ, GA, OH, MA, WA, …)
+- More states (AZ, GA, OH, WA, …)
 - WCAG AAA accessibility audit
 - Save / share secure report links
 
@@ -341,7 +342,7 @@ All findings include the underlying citation so families and advocates can verif
 
 ## Disclaimer
 
-EduHelp is **not legal advice**. Final eligibility for an IEP or 504 plan is determined by the school's multidisciplinary team after a full evaluation. For disputes, consult an attorney or your state's protection-and-advocacy agency (Disability Law Colorado, Disability Rights California, Disability Rights Texas, Disability Rights New York, Disability Rights Florida, Equip for Equality (IL), …).
+EduHelp is **not legal advice**. Final eligibility for an IEP or 504 plan is determined by the school's multidisciplinary team after a full evaluation. For disputes, consult an attorney or your state's protection-and-advocacy agency (Disability Law Colorado, Disability Rights California, Disability Rights Texas, Disability Rights New York, Disability Rights Florida, Equip for Equality (IL), Disability Law Center (MA), …).
 
 ---
 

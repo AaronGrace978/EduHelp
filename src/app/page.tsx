@@ -21,7 +21,7 @@ const FEATURES = [
   {
     icon: Brain,
     title: "Trained on real eligibility rules",
-    body: "Built-in rules engine maps documents to the 13 IDEA categories using Colorado's ECEA and California's 5 CCR § 3030 — with citations for every finding.",
+    body: "Built-in rules engine maps documents to IDEA categories using each state's administrative code (ECEA, 603 CMR 28, 23 IAC, etc.) — with citations for every finding.",
   },
   {
     icon: Sparkles,
@@ -31,12 +31,12 @@ const FEATURES = [
   {
     icon: ScrollText,
     title: "Letters that actually get answered",
-    body: "Ready-to-send letters for evaluation requests, IEE requests, prior written notice, and 504 plan asks — citing the right Colorado and California statutes.",
+    body: "Ready-to-send letters for evaluation requests, IEE requests, prior written notice, and 504 plan asks — citing the right state regulations.",
   },
   {
     icon: Compass,
-    title: "Six states, one tool",
-    body: "Colorado, California, Texas, New York, Florida, and Illinois rule sets — plus state-specific timeline calculator, escalation letters, and parent center directories.",
+    title: "Seven states, one tool",
+    body: "Seven state rule sets (incl. Massachusetts 603 CMR 28) — plus timeline calculator, escalation letters, and parent center directories.",
   },
   {
     icon: ShieldCheck,
@@ -49,7 +49,7 @@ const STEPS = [
   {
     n: "01",
     title: "Pick your state",
-    body: "Colorado or California — EduHelp uses the right rules and citations.",
+    body: "Pick your state — EduHelp uses the matching rules and citations.",
   },
   {
     n: "02",
@@ -91,8 +91,9 @@ export default function HomePage() {
                 education categories, IEP services, or 504 accommodations they
                 may qualify for under <strong>Colorado</strong>,{" "}
                 <strong>California</strong>, <strong>Texas</strong>,{" "}
-                <strong>New York</strong>, <strong>Florida</strong>, and{" "}
-                <strong>Illinois</strong> law.
+                <strong>New York</strong>, <strong>Florida</strong>,{" "}
+                <strong>Illinois</strong>, and <strong>Massachusetts</strong>{" "}
+                law.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link href="/analyze" className="btn-primary">
@@ -104,7 +105,7 @@ export default function HomePage() {
               </div>
               <ul className="mt-8 grid max-w-xl grid-cols-1 gap-2 text-sm text-slate-600 sm:grid-cols-2">
                 {[
-                  "13 IDEA categories · 6 state rule sets",
+                  "13 IDEA categories · 7 state rule sets",
                   "OCR for scanned PDFs / phone photos",
                   "Ask-the-document chat & SMART goal review",
                   "Escalation kit: IEE, mediation, OCR, due process",
@@ -191,7 +192,7 @@ export default function HomePage() {
 
       <section className="container-page py-16 sm:py-20">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="pill-brand">Six states · more on the way</span>
+          <span className="pill-brand">Seven states · more on the way</span>
           <h2 className="section-title mt-4">
             State rules and timelines, baked in.
           </h2>
@@ -208,6 +209,7 @@ export default function HomePage() {
             { code: "NY", title: "New York", cite: "8 NYCRR § 200.1(zz)" },
             { code: "FL", title: "Florida", cite: "Rule 6A-6.030xx" },
             { code: "IL", title: "Illinois", cite: "23 IAC § 226.75" },
+            { code: "MA", title: "Massachusetts", cite: "603 CMR 28.02(7)" },
           ].map((s) => (
             <Link
               key={s.code}

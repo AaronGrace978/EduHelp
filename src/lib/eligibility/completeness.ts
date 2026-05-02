@@ -155,6 +155,18 @@ const STATE_CHECKS: Partial<Record<StateCode, DomainCheck[]>> = {
       severity: "thin",
     },
   ],
+  MA: [
+    {
+      domain: "Tiered instruction / progress-monitoring data",
+      isPresent: (text) =>
+        /\bMTSS|tier (?:1|2|3)|progress monitoring|scientifically based instruction\b/i.test(
+          text,
+        ),
+      detail:
+        "Massachusetts encourages documentation of tiered instruction and progress monitoring before referring for SLD evaluation. Ask for intervention logs and benchmark data.",
+      severity: "thin",
+    },
+  ],
 };
 
 export function scanCompleteness(

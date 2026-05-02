@@ -1,4 +1,12 @@
-export const SUPPORTED_STATES = ["CO", "CA", "TX", "NY", "FL", "IL"] as const;
+export const SUPPORTED_STATES = [
+  "CO",
+  "CA",
+  "TX",
+  "NY",
+  "FL",
+  "IL",
+  "MA",
+] as const;
 export type StateCode = (typeof SUPPORTED_STATES)[number];
 
 export type EligibilityProgram = "IEP" | "504";
@@ -12,6 +20,7 @@ export const STATE_NAMES: Record<StateCode, string> = {
   NY: "New York",
   FL: "Florida",
   IL: "Illinois",
+  MA: "Massachusetts",
 };
 
 export interface EligibilityCategory {

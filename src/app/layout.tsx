@@ -4,13 +4,14 @@ import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PWARegister } from "@/components/PWARegister";
+import { Chatbot } from "@/components/Chatbot";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "EduHelp — Special Education Eligibility, Made Clear",
   description:
-    "Upload evaluations, IEP / 504 reports, or test results and get a plain-English summary of what your child may be eligible for under Colorado, California, Texas, New York, Florida, and Illinois special-education law.",
+    "Upload evaluations, IEP / 504 reports, or test results and get a plain-English summary of what your child may be eligible for under Colorado, California, Texas, New York, Florida, Illinois, and Massachusetts special-education law.",
   metadataBase: new URL("https://eduhelp.app"),
   manifest: "/manifest.webmanifest",
   applicationName: "EduHelp",
@@ -52,6 +53,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
         </div>
+        <Chatbot />
         <PWARegister />
       </body>
     </html>

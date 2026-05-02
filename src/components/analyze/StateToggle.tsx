@@ -11,6 +11,7 @@ const SUB: Record<StateCode, string> = {
   NY: "8 NYCRR § 200.1(zz)",
   FL: "Rule 6A-6.030xx",
   IL: "23 IAC § 226.75",
+  MA: "603 CMR 28.02(7)",
 };
 
 export function StateToggle({

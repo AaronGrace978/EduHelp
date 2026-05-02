@@ -95,8 +95,8 @@ export function Footer() {
         <div className="container-page flex flex-col items-start justify-between gap-2 py-4 text-xs text-slate-500 sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} EduHelp. Built for families.</p>
           <p>
-            Citations: IDEA 34 C.F.R. § 300.8 · CO ECEA 1 CCR 301-8 · CA 5 CCR
-            § 3030
+            Citations: IDEA 34 C.F.R. § 300.8 · CO ECEA · CA 5 CCR § 3030 · MA
+            603 CMR 28
           </p>
         </div>
       </div>

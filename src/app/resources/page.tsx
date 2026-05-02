@@ -101,8 +101,8 @@ function ResourcesPageInner() {
         </h1>
         <p className="mt-3 text-base leading-relaxed text-slate-600">
           Hand-picked resources for Colorado, California, Texas, New York,
-          Florida, and Illinois families, plus live-scraped headlines from
-          state Departments of Education.
+          Florida, Illinois, and Massachusetts families, plus live-scraped
+          headlines from state Departments of Education.
         </p>
       </div>
 

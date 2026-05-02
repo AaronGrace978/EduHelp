@@ -343,7 +343,7 @@ export default function SettingsPage() {
               </p>
               <p className="mt-1">
                 EduHelp's deterministic rules engine still produces a full
-                eligibility report for any of the 6 supported states without
+                eligibility report for any of the 7 supported states without
                 any AI key — AI just adds a parent-friendly narrative on top.
               </p>
             </div>

@@ -123,6 +123,19 @@ const STATE_RULES: Record<StateCode, StateRuleSet> = {
     mediation: "23 IAC § 226.560; 34 C.F.R. § 300.506",
     ocrRegion: "U.S. Department of Education OCR, Chicago Office (Region V)",
   },
+  MA: {
+    name: "Massachusetts",
+    eval: "603 CMR 28.04 and 34 C.F.R. § 300.301",
+    eligibility: "603 CMR 28.02(7) and 603 CMR 28.05",
+    pwn: "34 C.F.R. § 300.503 and 603 CMR 28.07",
+    iee: "34 C.F.R. § 300.502 and 603 CMR 28.04(5)",
+    stateComplaint: {
+      agency: "Massachusetts Department of Elementary and Secondary Education (DESE), Problem Resolution System Office",
+      cite: "603 CMR 28.08; 34 C.F.R. §§ 300.151–300.153",
+    },
+    mediation: "603 CMR 28.08; 34 C.F.R. § 300.506",
+    ocrRegion: "U.S. Department of Education OCR, Boston Office (Region I)",
+  },
 };
 
 export function buildEvaluationLetter(inputs: TemplateInputs): string {

@@ -1,8 +1,8 @@
 {
   "name": "eduhelp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
-  "description": "AI-powered tool that helps families understand whether a child is eligible for an IEP, 504 Plan, or other special education supports in CO, CA, TX, NY, FL, and IL — with accommodations, IEP goal SMART review, deadline calculator, escalation kit, OCR, and document Q&A.",
+  "description": "AI-powered tool that helps families understand whether a child is eligible for an IEP, 504 Plan, or other special education supports in CO, CA, TX, NY, FL, IL, and MA — with accommodations, IEP goal SMART review, deadline calculator, escalation kit, OCR, and document Q&A.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

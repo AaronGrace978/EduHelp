@@ -186,7 +186,8 @@ function scoreCategory(
       break;
     }
     case "DD": {
-      const limit = category.state === "IL" ? 9 : 8;
+      const limit =
+        category.state === "IL" ? 9 : category.state === "MA" ? 7 : 8;
       if (ageYears !== undefined && ageYears <= limit) {
         hits.push({
           rationale: `Child is age ${ageYears}, within the 3–${limit} range eligible for Developmental Delay in ${STATE_NAMES[category.state]}.`,
@@ -269,9 +270,10 @@ function buildNextSteps(
         evalCite ? ` and ${evalCite}` : ""
       }.`,
     );
+    const schoolDayStates: StateCode[] = ["TX", "MA", "IL"];
     steps.push(
       `Ask for the school's prior written notice and consent forms — the evaluation timeline starts when you sign consent (${days} ${
-        state === "TX" ? "school days" : "calendar days"
+        schoolDayStates.includes(state) ? "school days" : "calendar days"
       } in ${STATE_NAMES[state]}).`,
     );
     steps.push(
@@ -298,6 +300,7 @@ const STATE_EVAL_CITES: Record<StateCode, string> = {
   NY: "8 NYCRR § 200.4",
   FL: "Rule 6A-6.0331, F.A.C.",
   IL: "23 IAC § 226.110",
+  MA: "603 CMR 28.04(1)(c)",
 };
 
 /** Days schools have to complete the evaluation after consent is signed. */
@@ -307,7 +310,8 @@ export const STATE_EVAL_TIMELINE_DAYS: Record<StateCode, number> = {
   TX: 45, // school days under 19 TAC § 89.1011
   NY: 60,
   FL: 60,
-  IL: 60,
+  IL: 60, // school days under 23 IAC § 226.110(d)
+  MA: 45, // school days under 603 CMR 28.04(1)(c)
 };
 
 const STATE_FALLBACK_ACTIONS: Record<StateCode, string[]> = {
@@ -346,6 +350,12 @@ const STATE_FALLBACK_ACTIONS: Record<StateCode, string[]> = {
     "Illinois requires the school district to make an eligibility determination within 60 school days of receiving consent.",
     "If you disagree with results, request an Independent Educational Evaluation (IEE) at public expense.",
     "Free help: Equip for Equality, the Family Resource Center on Disabilities, and the ISBE Special Education Department.",
+  ],
+  MA: [
+    "Submit a written referral or evaluation request to the school principal and special education director (keep a dated copy).",
+    "Massachusetts requires eligibility determination — and, if eligible, a proposed IEP — within 45 school days after the district receives your signed consent to evaluate.",
+    "If you disagree with results, request an Independent Educational Evaluation (IEE) at public expense.",
+    "Free help: Disability Law Center (DLC), the Federation for Children with Special Needs, and the Massachusetts DESE Problem Resolution System Office.",
   ],
 };
 

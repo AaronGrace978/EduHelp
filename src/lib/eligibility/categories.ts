@@ -1144,8 +1144,166 @@ export const ELIGIBILITY_CATEGORIES: EligibilityCategory[] = [
     citation: "23 IAC § 226.75; 34 C.F.R. § 300.8(b)",
   },
 
-  // ───────────── 504 PLAN — TX, NY, FL, IL ─────────────
-  ...(["TX", "NY", "FL", "IL"] as const).map((s) => ({
+  // ───────────── MASSACHUSETTS IEP CATEGORIES (603 CMR 28) ─────────────
+  {
+    name: "Specific Learning Disability",
+    state: "MA",
+    program: "IEP",
+    code: "SLD",
+    description:
+      "A disorder in one or more of the basic psychological processes affecting listening, thinking, speaking, reading, writing, spelling, or math. Teams consider instructional response and assessment data.",
+    evidenceMarkers: [
+      "dyslexia",
+      "dysgraphia",
+      "dyscalculia",
+      "specific learning disability",
+      "PSW",
+      "RtI",
+      "MTSS",
+      "tier 2",
+    ],
+    citation: "603 CMR 28.02(7); 34 C.F.R. § 300.8(c)(10)",
+  },
+  {
+    name: "Autism",
+    state: "MA",
+    program: "IEP",
+    code: "AU",
+    description:
+      "A developmental disability significantly affecting verbal and nonverbal communication and social interaction.",
+    evidenceMarkers: ["autism", "ASD", "ADOS", "social communication"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Other Health Impairment",
+    state: "MA",
+    program: "IEP",
+    code: "OHI",
+    description:
+      "Limited strength, vitality, or alertness due to chronic or acute health problems — a common pathway for ADHD eligibility.",
+    evidenceMarkers: ["ADHD", "ADD", "Tourette", "epilepsy", "diabetes", "asthma"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Emotional Disability",
+    state: "MA",
+    program: "IEP",
+    code: "ED",
+    description:
+      "A condition exhibiting one or more characteristics over a long period of time and to a marked degree that adversely affects educational performance.",
+    evidenceMarkers: [
+      "emotional disturbance",
+      "anxiety disorder",
+      "major depression",
+      "PTSD",
+      "trauma",
+      "school refusal",
+    ],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Communication",
+    state: "MA",
+    program: "IEP",
+    code: "SLI",
+    description:
+      "Speech, language, and communication disorders including articulation, fluency, voice, and language impairment.",
+    evidenceMarkers: ["articulation", "stuttering", "expressive", "receptive", "phonological", "CELF"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Intellectual Disability",
+    state: "MA",
+    program: "IEP",
+    code: "ID",
+    description:
+      "Significantly subaverage general intellectual functioning with concurrent deficits in adaptive behavior.",
+    evidenceMarkers: ["intellectual disability", "FSIQ below 70", "adaptive behavior", "Vineland", "ABAS"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Hearing Impairment",
+    state: "MA",
+    program: "IEP",
+    code: "HI",
+    description:
+      "An impairment in hearing, whether permanent or fluctuating, that adversely affects educational performance.",
+    evidenceMarkers: ["hearing loss", "hard of hearing", "audiogram"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Deafness",
+    state: "MA",
+    program: "IEP",
+    code: "D",
+    description:
+      "A hearing impairment so severe that the student is impaired in processing linguistic information through hearing, with or without amplification.",
+    evidenceMarkers: ["deaf", "profound hearing loss", "ASL"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Visual Impairment",
+    state: "MA",
+    program: "IEP",
+    code: "VI",
+    description:
+      "An impairment in vision that, even with correction, adversely affects educational performance.",
+    evidenceMarkers: ["visual impairment", "low vision", "legally blind"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Orthopedic Impairment",
+    state: "MA",
+    program: "IEP",
+    code: "OI",
+    description:
+      "A severe orthopedic impairment that adversely affects educational performance.",
+    evidenceMarkers: ["cerebral palsy", "spina bifida", "muscular dystrophy"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Traumatic Brain Injury",
+    state: "MA",
+    program: "IEP",
+    code: "TBI",
+    description:
+      "An acquired injury to the brain caused by an external physical force resulting in functional disability.",
+    evidenceMarkers: ["TBI", "traumatic brain injury", "post-concussive"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Multiple Disabilities",
+    state: "MA",
+    program: "IEP",
+    code: "MD",
+    description:
+      "Concomitant impairments that cause such severe educational needs that they cannot be addressed through a program for one impairment alone.",
+    evidenceMarkers: ["multiple disabilities", "co-occurring"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Deaf-Blindness",
+    state: "MA",
+    program: "IEP",
+    code: "DB",
+    description:
+      "Concomitant hearing and visual impairments causing severe communication and other developmental needs.",
+    evidenceMarkers: ["deafblind", "deaf-blind", "dual sensory"],
+    citation: "603 CMR 28.02(7)",
+  },
+  {
+    name: "Developmental Delay (ages 3–7)",
+    state: "MA",
+    program: "IEP",
+    code: "DD",
+    description:
+      "Massachusetts allows developmental delay eligibility for students at least 3 but not more than 7 years of age who demonstrate delays in one or more developmental areas.",
+    evidenceMarkers: ["developmental delay", "global delay", "early intervention", "preschool"],
+    citation: "603 CMR 28.02(7)",
+  },
+
+  // ───────────── 504 PLAN — TX, NY, FL, IL, MA ─────────────
+  ...(["TX", "NY", "FL", "IL", "MA"] as const).map((s) => ({
     name: "Section 504 Plan",
     state: s,
     program: "504" as const,
