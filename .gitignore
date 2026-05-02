@@ -1,4 +1,6 @@
-node_modules/
+# Local helper files
+.git-commit-msg.tmp
+
 .pnp
 .pnp.js
 
