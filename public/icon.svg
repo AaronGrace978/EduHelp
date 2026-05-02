@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1e40af"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="url(#g)"/>
+  <g fill="#fff">
+    <!-- Stylized graduation cap -->
+    <path d="M256 120 96 200l160 80 160-80-160-80zm0 100c-9 0-18-2-26-6l-78-39v76c0 24 47 49 104 49s104-25 104-49v-76l-78 39c-8 4-17 6-26 6z"/>
+    <!-- Tassel -->
+    <path d="M412 220v76l-12 6 6 36-22-6 6-36-12-6v-76z"/>
+  </g>
+</svg>

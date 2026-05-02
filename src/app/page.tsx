@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   MapPin,
 } from "lucide-react";
+// State-specific homepage cards are inlined below; old StateCard helper retired.
 
 const FEATURES = [
   {
@@ -34,8 +35,8 @@ const FEATURES = [
   },
   {
     icon: Compass,
-    title: "Live state resources",
-    body: "Curated CDE / CDE-CA links plus a daily-refreshed feed of new policy updates, hotlines, and parent center training.",
+    title: "Six states, one tool",
+    body: "Colorado, California, Texas, New York, Florida, and Illinois rule sets — plus state-specific timeline calculator, escalation letters, and parent center directories.",
   },
   {
     icon: ShieldCheck,
@@ -88,8 +89,10 @@ export default function HomePage() {
                 EduHelp reads your child's evaluations, IQ tests, medical
                 records, and school reports — then tells you which special
                 education categories, IEP services, or 504 accommodations they
-                may qualify for under <strong>Colorado</strong> and{" "}
-                <strong>California</strong> law.
+                may qualify for under <strong>Colorado</strong>,{" "}
+                <strong>California</strong>, <strong>Texas</strong>,{" "}
+                <strong>New York</strong>, <strong>Florida</strong>, and{" "}
+                <strong>Illinois</strong> law.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 <Link href="/analyze" className="btn-primary">
@@ -101,10 +104,12 @@ export default function HomePage() {
               </div>
               <ul className="mt-8 grid max-w-xl grid-cols-1 gap-2 text-sm text-slate-600 sm:grid-cols-2">
                 {[
-                  "13 IDEA categories supported",
-                  "Colorado ECEA + California CCR rules",
-                  "Bring your own AI provider",
-                  "Free, open source on GitHub",
+                  "13 IDEA categories · 6 state rule sets",
+                  "OCR for scanned PDFs / phone photos",
+                  "Ask-the-document chat & SMART goal review",
+                  "Escalation kit: IEE, mediation, OCR, due process",
+                  "Bring your own AI · always free, open source",
+                  "Spanish report output toggle",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <CheckCircle2 className="h-4 w-4 text-accent-600" />
@@ -185,27 +190,43 @@ export default function HomePage() {
       </section>
 
       <section className="container-page py-16 sm:py-20">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <StateCard
-            state="CO"
-            title="Colorado"
-            description="Built on Colorado's Exceptional Children's Educational Act (ECEA) Rules and CDE eligibility criteria. Includes Developmental Delay (3–8) and Part C / Early Intervention pathways."
-            points={[
-              "Evaluation timeline: 60 calendar days from signed consent",
-              "PEAK Parent Center & Disability Law Colorado linked in every report",
-              "Citations to 1 CCR 301-8 § 2.08 in every finding",
-            ]}
-          />
-          <StateCard
-            state="CA"
-            title="California"
-            description="Built on Cal. Ed. Code §§ 56026, 56333–56338 and 5 CCR § 3030 / 3031. Includes California's Established Medical Disability (EMD) eligibility for ages 3–5."
-            points={[
-              "Severe Discrepancy + PSW + RTI patterns recognized for SLD",
-              "Disability Rights California & Family Empowerment Centers linked",
-              "Citations to 5 CCR § 3030 in every finding",
-            ]}
-          />
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="pill-brand">Six states · more on the way</span>
+          <h2 className="section-title mt-4">
+            State rules and timelines, baked in.
+          </h2>
+          <p className="section-subtitle mx-auto">
+            Citations to the actual administrative code your district has to
+            follow — in every finding, every letter, every deadline.
+          </p>
+        </div>
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            { code: "CO", title: "Colorado", cite: "1 CCR 301-8 § 2.08" },
+            { code: "CA", title: "California", cite: "5 CCR § 3030" },
+            { code: "TX", title: "Texas", cite: "19 TAC § 89.1040" },
+            { code: "NY", title: "New York", cite: "8 NYCRR § 200.1(zz)" },
+            { code: "FL", title: "Florida", cite: "Rule 6A-6.030xx" },
+            { code: "IL", title: "Illinois", cite: "23 IAC § 226.75" },
+          ].map((s) => (
+            <Link
+              key={s.code}
+              href={`/analyze?state=${s.code}`}
+              className="group card transition hover:-translate-y-0.5 hover:shadow-md"
+            >
+              <div className="flex items-center gap-3">
+                <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 text-base font-bold text-white shadow-soft">
+                  {s.code}
+                </div>
+                <div>
+                  <h3 className="text-base font-semibold text-slate-900 group-hover:text-brand-700">
+                    {s.title}
+                  </h3>
+                  <p className="text-xs text-slate-500">{s.cite}</p>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -299,56 +320,3 @@ function HeroCard() {
   );
 }
 
-function StateCard({
-  state,
-  title,
-  description,
-  points,
-}: {
-  state: "CO" | "CA";
-  title: string;
-  description: string;
-  points: string[];
-}) {
-  return (
-    <div className="card">
-      <div className="flex items-center gap-3">
-        <div className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-accent-500 text-base font-bold text-white shadow-soft">
-          {state}
-        </div>
-        <div>
-          <h3 className="text-xl font-semibold text-slate-900">{title}</h3>
-          <p className="text-sm text-slate-500">State-specific rules engine</p>
-        </div>
-      </div>
-      <p className="mt-4 text-sm leading-relaxed text-slate-600">
-        {description}
-      </p>
-      <ul className="mt-4 space-y-2">
-        {points.map((p) => (
-          <li
-            key={p}
-            className="flex items-start gap-2 text-sm leading-relaxed text-slate-700"
-          >
-            <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-600" />
-            {p}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-5 flex flex-wrap gap-2">
-        <Link
-          href={`/analyze?state=${state}`}
-          className="btn-primary px-4 py-2 text-sm"
-        >
-          Analyze for {title}
-        </Link>
-        <Link
-          href={`/resources?state=${state}`}
-          className="btn-secondary px-4 py-2 text-sm"
-        >
-          {title} resources
-        </Link>
-      </div>
-    </div>
-  );
-}

@@ -12,12 +12,16 @@
  * deterministic rules-engine output without any AI narrative.
  */
 
-import type { AIProvider } from "@/lib/eligibility/ai-types";
+import type {
+  AIProvider,
+  ResponseLanguage,
+} from "@/lib/eligibility/ai-types";
 
 export const SETTINGS_STORAGE_KEY = "eduhelp.settings.v1";
 
 export interface ClientAISettings {
   provider: AIProvider | "auto";
+  language: ResponseLanguage;
   openaiKey: string;
   openaiModel: string;
   anthropicKey: string;
@@ -32,6 +36,7 @@ export interface ClientAISettings {
 
 export const DEFAULT_SETTINGS: ClientAISettings = {
   provider: "auto",
+  language: "en",
   openaiKey: "",
   openaiModel: "gpt-5.5",
   anthropicKey: "",
@@ -77,8 +82,8 @@ export function clearSettings() {
 export function settingsToHeaders(s: ClientAISettings): Record<string, string> {
   const h: Record<string, string> = {};
   if (s.provider && s.provider !== "auto") h["x-eduhelp-provider"] = s.provider;
+  if (s.language && s.language !== "en") h["x-eduhelp-language"] = s.language;
 
-  // Pick which key/model to send based on the chosen (or auto) provider.
   const candidates: AIProvider[] =
     s.provider === "auto"
       ? ["openai", "anthropic", "openrouter", "ollama"]

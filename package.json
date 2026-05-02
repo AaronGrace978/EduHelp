@@ -1,27 +1,33 @@
 {
   "name": "eduhelp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "AI-powered tool that helps families understand whether a child is eligible for an IEP, 504 Plan, or other special education supports in Colorado and California.",
+  "description": "AI-powered tool that helps families understand whether a child is eligible for an IEP, 504 Plan, or other special education supports in CO, CA, TX, NY, FL, and IL — with accommodations, IEP goal SMART review, deadline calculator, escalation kit, OCR, and document Q&A.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "package:standalone": "node scripts/package-standalone.js",
+    "release:bundle": "npm run build && npm run package:standalone"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",
     "cheerio": "^1.0.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.17",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "lucide-react": "^0.460.0",
+    "mammoth": "^1.12.0",
     "next": "14.2.18",
     "openai": "^4.73.0",
     "pdf-parse": "^1.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.3.5",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "tesseract.js": "^7.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.17.6",

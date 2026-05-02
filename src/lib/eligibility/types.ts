@@ -1,8 +1,18 @@
-export type StateCode = "CO" | "CA";
+export const SUPPORTED_STATES = ["CO", "CA", "TX", "NY", "FL", "IL"] as const;
+export type StateCode = (typeof SUPPORTED_STATES)[number];
 
 export type EligibilityProgram = "IEP" | "504";
 
 export type Likelihood = "Likely" | "Possible" | "Unlikely" | "Insufficient data";
+
+export const STATE_NAMES: Record<StateCode, string> = {
+  CO: "Colorado",
+  CA: "California",
+  TX: "Texas",
+  NY: "New York",
+  FL: "Florida",
+  IL: "Illinois",
+};
 
 export interface EligibilityCategory {
   /** Short canonical name (e.g. "Specific Learning Disability") */
@@ -32,6 +42,17 @@ export interface EligibilityFinding {
   evidence: string[];
   /** Recommended next steps for families */
   nextSteps: string[];
+  /** Suggested accommodations if this category is supported */
+  accommodations?: string[];
+}
+
+export interface CompletenessIssue {
+  /** Short label e.g. "Adaptive functioning" */
+  domain: string;
+  /** Plain-English explanation of what's missing and why it matters */
+  detail: string;
+  /** Severity — "missing" (critical), "thin" (weak), "outdated" */
+  severity: "missing" | "thin" | "outdated";
 }
 
 export interface EligibilityResult {
@@ -43,6 +64,10 @@ export interface EligibilityResult {
   summary: string;
   /** Concrete, prioritized action items for the family */
   recommendedActions: string[];
+  /** Suggested classroom / testing accommodations matched to the profile */
+  suggestedAccommodations: string[];
+  /** Domains the evaluation appears to be missing */
+  completenessIssues: CompletenessIssue[];
   /** Optional AI-augmented narrative if an AI provider is configured */
   aiNarrative?: string;
   /** Standardized scores the engine extracted from the text */

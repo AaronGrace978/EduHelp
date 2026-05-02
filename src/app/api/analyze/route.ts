@@ -1,44 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { pdfToText } from "@/lib/pdf";
+import { extractFile, looksLikeScan } from "@/lib/extract-file";
 import { runEligibilityEngine } from "@/lib/eligibility/engine";
 import { maybeGenerateAINarrative } from "@/lib/eligibility/ai";
-import type {
-  AIProvider,
-  ProviderOverrides,
-} from "@/lib/eligibility/ai-types";
-import type { StateCode } from "@/lib/eligibility/types";
+import { readOverrides } from "@/lib/api-overrides";
+import { SUPPORTED_STATES, type StateCode } from "@/lib/eligibility/types";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 120;
 
-const MAX_BYTES = 15 * 1024 * 1024;
-const ACCEPTED_TYPES = new Set([
-  "application/pdf",
-  "text/plain",
-  "text/markdown",
-]);
-
-const VALID_PROVIDERS: AIProvider[] = [
-  "openai",
-  "anthropic",
-  "openrouter",
-  "ollama",
-];
-
-function readOverrides(req: NextRequest): ProviderOverrides | undefined {
-  const provider = req.headers.get("x-eduhelp-provider")?.toLowerCase() as
-    | AIProvider
-    | undefined;
-  const apiKey = req.headers.get("x-eduhelp-key") || undefined;
-  const model = req.headers.get("x-eduhelp-model") || undefined;
-  const siteUrl = req.headers.get("x-eduhelp-openrouter-site") || undefined;
-  const baseUrl = req.headers.get("x-eduhelp-ollama-base") || undefined;
-
-  if (!provider && !apiKey) return undefined;
-  if (provider && !VALID_PROVIDERS.includes(provider)) return undefined;
-
-  return { provider, apiKey, model, siteUrl, baseUrl };
-}
+const MAX_BYTES = 25 * 1024 * 1024;
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,9 +16,11 @@ export async function POST(req: NextRequest) {
     const stateRaw = String(formData.get("state") ?? "").toUpperCase();
     const notes = String(formData.get("notes") ?? "").trim();
 
-    if (stateRaw !== "CO" && stateRaw !== "CA") {
+    if (!SUPPORTED_STATES.includes(stateRaw as StateCode)) {
       return NextResponse.json(
-        { error: "Please choose either Colorado (CO) or California (CA)." },
+        {
+          error: `State "${stateRaw}" isn't supported yet. Supported states: ${SUPPORTED_STATES.join(", ")}.`,
+        },
         { status: 400 },
       );
     }
@@ -58,41 +30,45 @@ export async function POST(req: NextRequest) {
     const files = formData.getAll("files").filter((f): f is File => f instanceof File);
 
     let combinedText = "";
-    const fileSummaries: { name: string; size: number; type: string; chars: number }[] = [];
+    let scannedDetected = false;
+    const fileSummaries: {
+      name: string;
+      size: number;
+      type: string;
+      kind: string;
+      chars: number;
+      scanned: boolean;
+    }[] = [];
 
     for (const file of files) {
       if (file.size === 0) continue;
       if (file.size > MAX_BYTES) {
         return NextResponse.json(
-          { error: `"${file.name}" is larger than 15 MB. Try a smaller file.` },
+          { error: `"${file.name}" is larger than 25 MB. Try a smaller file.` },
           { status: 413 },
         );
       }
       const arr = new Uint8Array(await file.arrayBuffer());
       const buf = Buffer.from(arr);
-      let text = "";
-      const type = file.type || guessTypeByExt(file.name);
-      if (type === "application/pdf") {
-        text = await pdfToText(buf);
-      } else if (
-        ACCEPTED_TYPES.has(type) ||
-        /\.(txt|md|markdown)$/i.test(file.name)
-      ) {
-        text = buf.toString("utf8");
-      } else {
+
+      const extracted = await extractFile(buf, file.name, file.type || "");
+      if (extracted.kind === "unsupported") {
         return NextResponse.json(
           {
-            error: `"${file.name}" is a ${type || "binary"} file. Please upload PDF, TXT, or Markdown only. (Image OCR is on the roadmap.)`,
+            error: `"${file.name}" is a ${file.type || "binary"} file. Please upload PDF, DOCX, TXT, Markdown, or an image (PNG / JPG).`,
           },
           { status: 415 },
         );
       }
-      combinedText += `\n\n===== FILE: ${file.name} =====\n${text}`;
+      if (extracted.scanned) scannedDetected = true;
+      combinedText += `\n\n===== FILE: ${file.name} =====\n${extracted.text}`;
       fileSummaries.push({
         name: file.name,
         size: file.size,
-        type,
-        chars: text.length,
+        type: file.type || "",
+        kind: extracted.kind,
+        chars: extracted.text.length,
+        scanned: extracted.scanned,
       });
     }
 
@@ -100,11 +76,14 @@ export async function POST(req: NextRequest) {
       combinedText += `\n\n===== PARENT NOTES =====\n${notes}`;
     }
 
-    if (!combinedText.trim()) {
+    if (!combinedText.trim() || looksLikeScan(combinedText)) {
       return NextResponse.json(
         {
           error:
-            "We couldn't read any text from the documents you uploaded. If your PDF is a scan, it may need OCR first.",
+            scannedDetected || !combinedText.trim()
+              ? "We couldn't read any text from your upload. If your PDF is a scan, export each page as a JPG/PNG image and try again — EduHelp will OCR images automatically."
+              : "We didn't get enough text to run the analysis. Try adding more documents or pasting details into the parent notes box.",
+          scanned: scannedDetected,
         },
         { status: 400 },
       );
@@ -129,6 +108,8 @@ export async function POST(req: NextRequest) {
         ? { provider: ai.provider, model: ai.model }
         : { provider: null, model: null },
       files: fileSummaries,
+      /** First 16k chars of extracted text — used by /api/chat for follow-ups. */
+      excerpt: combinedText.slice(0, 16000),
     });
   } catch (err) {
     console.error("[EduHelp] analyze error:", err);
@@ -140,13 +121,4 @@ export async function POST(req: NextRequest) {
       { status: 500 },
     );
   }
-}
-
-function guessTypeByExt(name: string): string {
-  const lower = name.toLowerCase();
-  if (lower.endsWith(".pdf")) return "application/pdf";
-  if (lower.endsWith(".txt")) return "text/plain";
-  if (lower.endsWith(".md") || lower.endsWith(".markdown"))
-    return "text/markdown";
-  return "";
 }

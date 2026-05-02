@@ -1,21 +1,33 @@
 # EduHelp
 
-> AI-assisted special-education eligibility navigator for families in **Colorado** and **California**.
+> AI-assisted special-education eligibility navigator for families in **Colorado, California, Texas, New York, Florida, and Illinois**.
 
-EduHelp lets parents, caregivers, and advocates upload an evaluation, IEP/504 report, doctor's letter, or test results and instantly see:
+EduHelp lets parents, caregivers, and advocates upload an evaluation, IEP/504 report, doctor's letter, or test results — even **photos of paper docs** and **scanned PDFs** — and instantly see:
 
 - which **IDEA categories** the child may qualify under (with state-specific citations)
 - whether a **504 Plan** is the right fallback
 - the **scores, diagnoses, and instruments** the engine pulled out of the document
-- prioritized **next steps** (who to email, what to ask for, what timeline applies)
-- ready-to-send **letter templates** with the right legal citations
-- live **state DOE resources** and curated parent advocacy organizations
+- **what the evaluation is missing** (a domain-completeness scanner)
+- prioritized **next steps** and a state-aware **timeline calculator** (consent → eligibility → IEP)
+- evidence-based **suggested accommodations** matched to the profile
+- ready-to-send **letter templates** + a full **escalation kit** (IEE, mediation, state complaint, OCR complaint, due process)
+- a **1-page child profile** to share with new teachers and subs
+- a **glossary** of every special-ed acronym in plain English (with hover tooltips)
+- live **state DOE resources** for all 6 supported states
+- **ask-the-document chat** (your AI provider answers follow-up questions about the uploaded report)
+- **IEP goal SMART review** that scores each goal and suggests rewrites
+- **Spanish output toggle** for the AI narrative & chat
+- **Print + PDF export**, plus a **PWA / installable** experience
 
 It runs **fully without any AI key** using a deterministic rules engine built on:
 
 - IDEA — `34 C.F.R. § 300.8`
 - Colorado ECEA Rules — `1 CCR 301-8 § 2.08`
 - California `5 CCR § 3030` and `Cal. Ed. Code §§ 56026, 56333–56338`
+- Texas `19 TAC § 89.1040`
+- New York `8 NYCRR § 200.1(zz)`
+- Florida Administrative Code Rule `6A-6.030xx`
+- Illinois `23 IAC § 226.75`
 
 You can plug in **OpenAI**, **Anthropic**, **OpenRouter**, or **Ollama Cloud** as a drop-in narrative generator on top of the rules engine.
 
@@ -32,9 +44,12 @@ Schools' special-education paperwork is dense, the legal terms vary by state, an
 - [Next.js 14](https://nextjs.org) (App Router, TypeScript)
 - [Tailwind CSS](https://tailwindcss.com) + custom design system
 - [react-dropzone](https://react-dropzone.js.org) for uploads
-- [pdf-parse](https://www.npmjs.com/package/pdf-parse) for PDF text extraction
+- [pdf-parse](https://www.npmjs.com/package/pdf-parse) — PDF text extraction
+- [mammoth](https://www.npmjs.com/package/mammoth) — DOCX text extraction
+- [tesseract.js](https://tesseract.projectnaptha.com/) — server-side OCR for image / scanned-doc uploads
+- [jspdf](https://github.com/parallax/jsPDF) + [html2canvas](https://html2canvas.hertzen.com/) — client-side PDF export of the report
 - [cheerio](https://cheerio.js.org) for live state-DOE scraping
-- [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [OpenRouter](https://openrouter.ai), [Ollama Cloud](https://ollama.com) — pick one
+- [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [OpenRouter](https://openrouter.ai), [Ollama Cloud](https://ollama.com) — pick one (or "auto")
 
 ---
 
@@ -49,6 +64,16 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) and you're in.
+
+## Easiest installs (no Git required)
+
+| Method | Who it's for | Steps |
+| ------ | ------------ | ----- |
+| **GitHub Release ZIP** | Friends / family who just want to run the app | Download `EduHelp-standalone-v*.zip` from the [Releases](https://github.com/AaronGrace978/EduHelp/releases) page → unzip → install [Node.js 20+](https://nodejs.org) → open the folder → read `HOW-TO-RUN.txt` → run `node server.js` → visit [http://localhost:3000](http://localhost:3000). Optional: copy `.env.example` to `.env.local` for server-side AI keys, or paste keys in the browser at `/settings`. |
+| **Docker** | Anyone with [Docker Desktop](https://www.docker.com/products/docker-desktop/) | In the project folder: `docker compose up --build` → open [http://localhost:3000](http://localhost:3000). Optional: copy `.env.example` to `.env`, fill in keys, then `docker compose --env-file .env up --build`. |
+| **Windows menu** | You already have the repo | Double-click `EduHelp.bat` → **5. Create portable ZIP** — shares a ZIP that only needs Node.js on the other machine (same as the Release bundle). |
+
+Maintainers: from a clean clone, `release.bat` (or `npm run release:bundle` then zip `.next/standalone`) produces the same standalone folder Next.js documents for production — minimal `node_modules`, one `node server.js` entrypoint. Version numbers stay in sync via `package.json` → `EduHelp-standalone-v{version}.zip`.
 
 ### Adding an AI provider
 
@@ -249,21 +274,27 @@ These settings live in `localStorage` and are sent as `x-eduhelp-provider`, `x-e
 
 ## Pages
 
-| Route        | What it does                                                                              |
-| ------------ | ----------------------------------------------------------------------------------------- |
-| `/`          | Landing page with feature overview                                                        |
-| `/analyze`   | Upload PDFs / text + state selector → eligibility report with evidence and next steps     |
-| `/resources` | Curated state-specific resources + live-scraped headlines from CDE / CDE-CA               |
-| `/templates` | Editable letter generator (eval request standard / firm, plus 504 request) with citations |
+| Route          | What it does                                                                              |
+| -------------- | ----------------------------------------------------------------------------------------- |
+| `/`            | Landing page with feature overview                                                                 |
+| `/analyze`     | Upload PDFs / DOCX / TXT / images, get a state-specific eligibility report + accommodations + completeness scan + ask-the-document chat + PDF export |
+| `/goals`       | Paste IEP goals → AI scores them on the SMART rubric and suggests rewrites                |
+| `/timeline`    | State-specific IDEA timeline calculator from consent → eligibility → IEP, with `.ics` export |
+| `/templates`   | Letter generator + escalation kit (eval, 504, IEE, mediation, state complaint, OCR, due process) + 1-page child profile |
+| `/resources`   | Curated state agencies & advocacy organizations + live-scraped DOE headlines              |
+| `/glossary`    | Searchable plain-English glossary of every special-ed acronym families encounter           |
+| `/settings`    | Configure AI provider, paste keys, pick model, choose English / Spanish output, see cost estimate |
 
 ---
 
 ## How the eligibility engine works
 
-1. **Extract** — pulls standardized scores (FSIQ, VCI, BASC T-scores, etc.), diagnoses, instruments, and child age from the document text.
-2. **Score** — runs each Colorado / California IDEA category through a rule set that combines keyword matches with score-based heuristics (e.g., low academic + average cognitive → SLD; FSIQ ≤ 75 with low adaptive → ID; ADOS/ADI-R mention → ASD).
+1. **Extract** — pulls text from PDF / DOCX / images (server-side OCR), then standardized scores (FSIQ, VCI, BASC T-scores, etc.), diagnoses, instruments, and child age.
+2. **Score** — runs each state's IDEA categories through a rule set that combines keyword matches with score-based heuristics (e.g., low academic + average cognitive → SLD; FSIQ ≤ 75 with low adaptive → ID; ADOS/ADI-R mention → ASD; age 3–5 + established medical → CA EMD / FL ECDD / TX NCEC).
 3. **Rank** — sorts findings by confidence (0–100) and assigns a likelihood band (`Likely`, `Possible`, `Unlikely`, `Insufficient data`).
-4. **Narrate** — if an AI provider is configured, sends the structured findings + a 6,000-char document excerpt and asks the model to produce a parent-friendly summary, evidence bullets, and an action checklist. The AI never invents categories — it only narrates the rules engine output.
+4. **Match** — runs an evidence-based accommodation library against the conditions and scores, surfacing 8–18 specific classroom / testing accommodations to bring to the IEP / 504 meeting.
+5. **Scan** — flags missing evaluation domains (cognitive, achievement, adaptive, social-emotional, language, FBA, hearing/vision screen, EL status, MTSS data, severe-discrepancy / PSW analysis).
+6. **Narrate** — if an AI provider is configured, sends the structured findings + a 6,000-char document excerpt and asks the model to produce a parent-friendly summary, evidence bullets, and an action checklist (in English or Spanish). The AI never invents categories — it only narrates the rules engine output.
 
 All findings include the underlying citation so families and advocates can verify them.
 
@@ -277,20 +308,40 @@ All findings include the underlying citation so families and advocates can verif
 
 ---
 
+## What's new in v0.2.0
+
+- **Six states** — added Texas, New York, Florida, and Illinois rule sets alongside CO / CA
+- **DOCX uploads** via `mammoth`
+- **Server-side OCR** for PNG / JPG / WEBP scans via `tesseract.js`
+- **Document completeness scanner** — flags missing assessment domains
+- **Accommodation library** — evidence-based matches per profile
+- **IEP goal SMART review** — `/goals` page with AI-driven rubric scoring
+- **Ask-the-document chat** — embedded in the analyze page, doc-grounded answers
+- **Timeline calculator** — `/timeline` with `.ics` export per state
+- **Glossary** — `/glossary` page + `<GlossaryTerm>` hover tooltips
+- **Escalation kit** — IEE, mediation, state complaint, OCR complaint, due process letters
+- **1-page child profile** generator
+- **PDF / print export** of the eligibility report
+- **PWA** — installable on mobile, app-shell offline support
+- **Spanish output toggle** for AI narrative + chat
+- **Cost estimator** in `/settings` (rough $ per analysis based on selected model)
+
 ## Roadmap
 
-- Image / scanned-PDF OCR
-- DOCX upload support
-- Spanish-language UI
-- Additional states (Texas, NY, FL, IL)
-- Automatic IEE-request and Due Process complaint templates
+- Multi-document case file with timeline view & encrypted local storage
+- Annotated source viewer (link findings → exact PDF page / sentence)
+- Native installer via Tauri
+- Local-only / WebGPU AI mode (no cloud round-trip)
+- Full UI i18n (Spanish UI strings, not just AI output)
+- More states (AZ, GA, OH, MA, WA, …)
+- WCAG AAA accessibility audit
 - Save / share secure report links
 
 ---
 
 ## Disclaimer
 
-EduHelp is **not legal advice**. Final eligibility for an IEP or 504 plan is determined by the school's multidisciplinary team after a full evaluation. For disputes, consult an attorney or your state's protection-and-advocacy agency (Disability Law Colorado / Disability Rights California).
+EduHelp is **not legal advice**. Final eligibility for an IEP or 504 plan is determined by the school's multidisciplinary team after a full evaluation. For disputes, consult an attorney or your state's protection-and-advocacy agency (Disability Law Colorado, Disability Rights California, Disability Rights Texas, Disability Rights New York, Disability Rights Florida, Equip for Equality (IL), …).
 
 ---
 

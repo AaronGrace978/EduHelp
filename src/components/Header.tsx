@@ -9,13 +9,19 @@ import {
   FileText,
   Github,
   Settings as SettingsIcon,
+  Target,
+  Calendar,
+  BookMarked,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 const NAV = [
   { href: "/analyze", label: "Analyze", icon: FileSearch },
-  { href: "/resources", label: "Resources", icon: BookOpen },
+  { href: "/goals", label: "Goal review", icon: Target },
+  { href: "/timeline", label: "Timeline", icon: Calendar },
   { href: "/templates", label: "Templates", icon: FileText },
+  { href: "/resources", label: "Resources", icon: BookOpen },
+  { href: "/glossary", label: "Glossary", icon: BookMarked },
   { href: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 

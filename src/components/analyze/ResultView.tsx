@@ -8,12 +8,15 @@ import {
   FileText,
   Sparkles,
   Brain,
+  Wand2,
+  ScanSearch,
 } from "lucide-react";
 import { cn } from "@/lib/cn";
-import type {
-  EligibilityFinding,
-  EligibilityResult,
-  Likelihood,
+import {
+  STATE_NAMES,
+  type EligibilityFinding,
+  type EligibilityResult,
+  type Likelihood,
 } from "@/lib/eligibility/types";
 
 interface Props {
@@ -28,11 +31,17 @@ const LIKELIHOOD_STYLES: Record<Likelihood, string> = {
   "Insufficient data": "bg-slate-100 text-slate-600 border-slate-200",
 };
 
+const SEVERITY_STYLES: Record<string, string> = {
+  missing: "bg-rose-100 text-rose-800 border-rose-200",
+  thin: "bg-amber-100 text-amber-800 border-amber-200",
+  outdated: "bg-slate-100 text-slate-700 border-slate-200",
+};
+
 export function ResultView({ result, ai }: Props) {
-  const stateName = result.state === "CO" ? "Colorado" : "California";
+  const stateName = STATE_NAMES[result.state];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" id="eduhelp-report">
       <div className="card border-brand-200 bg-gradient-to-br from-brand-50 via-white to-accent-50">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
@@ -96,7 +105,7 @@ export function ResultView({ result, ai }: Props) {
                   </p>
                   <p className="mt-1 text-sm text-amber-900/80">
                     The most useful next step is to send a written request for
-                    a full special education evaluation. The Templates tab has
+                    a full special education evaluation. The Templates page has
                     a ready-to-send letter for {stateName}.
                   </p>
                 </div>
@@ -108,6 +117,67 @@ export function ResultView({ result, ai }: Props) {
           ))}
         </div>
       </section>
+
+      {result.completenessIssues.length > 0 && (
+        <section>
+          <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900">
+            <ScanSearch className="h-5 w-5 text-rose-600" />
+            What this evaluation is missing
+          </h3>
+          <p className="mb-3 text-sm leading-relaxed text-slate-600">
+            These domains are common in a full evaluation but don't appear in
+            the document you uploaded. Consider asking the school to add them.
+          </p>
+          <div className="grid gap-3 md:grid-cols-2">
+            {result.completenessIssues.map((issue) => (
+              <div
+                key={issue.domain}
+                className="rounded-2xl border border-slate-200 bg-white p-4"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm font-semibold text-slate-900">
+                    {issue.domain}
+                  </p>
+                  <span
+                    className={cn(
+                      "rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                      SEVERITY_STYLES[issue.severity],
+                    )}
+                  >
+                    {issue.severity}
+                  </span>
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                  {issue.detail}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {result.suggestedAccommodations.length > 0 && (
+        <section className="card">
+          <h3 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-slate-500">
+            <Wand2 className="h-4 w-4" /> Suggested accommodations
+          </h3>
+          <p className="mt-2 text-xs text-slate-500">
+            Evidence-based accommodations matched to the diagnoses and scores
+            we found. Bring this list to your next IEP / 504 meeting.
+          </p>
+          <ul className="mt-3 grid gap-2 md:grid-cols-2">
+            {result.suggestedAccommodations.map((acc) => (
+              <li
+                key={acc}
+                className="flex items-start gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-700"
+              >
+                <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-600" />
+                {acc}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section className="grid gap-4 lg:grid-cols-2">
         <div className="card">
@@ -263,6 +333,19 @@ function FindingCard({ finding }: { finding: EligibilityFinding }) {
           ))}
         </ol>
       </div>
+
+      {finding.accommodations && finding.accommodations.length > 0 && (
+        <div className="mt-4 rounded-xl border border-accent-200 bg-accent-50/50 p-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-accent-800">
+            Accommodations to consider
+          </p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-slate-700">
+            {finding.accommodations.map((a) => (
+              <li key={a}>{a}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

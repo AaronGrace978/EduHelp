@@ -31,10 +31,14 @@ export function Dropzone({
     onDrop,
     accept: {
       "application/pdf": [".pdf"],
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
       "text/plain": [".txt"],
       "text/markdown": [".md", ".markdown"],
+      "image/png": [".png"],
+      "image/jpeg": [".jpg", ".jpeg"],
+      "image/webp": [".webp"],
     },
-    maxSize: 15 * 1024 * 1024,
+    maxSize: 25 * 1024 * 1024,
   });
 
   function remove(idx: number) {
@@ -62,7 +66,10 @@ export function Dropzone({
             : "Drop evaluations, IEP/504 reports, or test results"}
         </p>
         <p className="mt-1 text-xs text-slate-500">
-          PDF, TXT, or Markdown · up to 15 MB each · multiple files OK
+          PDF, DOCX, TXT, Markdown, or photo (PNG/JPG/WEBP) · up to 25 MB each · multiple files OK
+        </p>
+        <p className="mt-1 text-[11px] text-slate-400">
+          Photos &amp; scanned images are run through on-server OCR automatically.
         </p>
         <p className="mt-3 text-[11px] uppercase tracking-wider text-slate-400">
           processed in-memory · never stored

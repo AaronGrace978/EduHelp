@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Brain,
   Check,
+  DollarSign,
   Eye,
   EyeOff,
   Info,
+  Languages,
   Lock,
   Save,
   Sparkles,
@@ -22,7 +24,10 @@ import {
 } from "@/lib/client-settings";
 import { OLLAMA_CLOUD_MODEL_FAMILIES } from "@/lib/ai-models";
 import { cn } from "@/lib/cn";
-import type { AIProvider } from "@/lib/eligibility/ai-types";
+import type {
+  AIProvider,
+  ResponseLanguage,
+} from "@/lib/eligibility/ai-types";
 
 interface ProviderSpec {
   id: AIProvider | "auto";
@@ -199,6 +204,40 @@ export default function SettingsPage() {
             </div>
           </div>
 
+          <div className="mt-6">
+            <label className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <Languages className="mr-1 inline h-3.5 w-3.5" />
+              Output language
+            </label>
+            <div className="mt-2 grid grid-cols-2 gap-2 sm:max-w-xs">
+              {[
+                { id: "en" as ResponseLanguage, label: "English" },
+                { id: "es" as ResponseLanguage, label: "Español" },
+              ].map((opt) => {
+                const active = settings.language === opt.id;
+                return (
+                  <button
+                    key={opt.id}
+                    type="button"
+                    onClick={() => update("language", opt.id)}
+                    className={cn(
+                      "rounded-xl border px-3 py-2 text-sm font-semibold transition",
+                      active
+                        ? "border-brand-500 bg-brand-50 text-brand-700"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-slate-300",
+                    )}
+                  >
+                    {opt.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-1.5 text-[11px] text-slate-500">
+              Affects AI narrative + chat answers. State citations stay in
+              English (legal accuracy).
+            </p>
+          </div>
+
           <ProviderSection
             title="OpenAI"
             href="https://platform.openai.com/api-keys"
@@ -293,6 +332,8 @@ export default function SettingsPage() {
           </div>
         </div>
 
+        <CostEstimator settings={settings} />
+
         <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600">
           <div className="flex items-start gap-3">
             <Info className="mt-0.5 h-4 w-4 flex-shrink-0 text-brand-600" />
@@ -302,8 +343,8 @@ export default function SettingsPage() {
               </p>
               <p className="mt-1">
                 EduHelp's deterministic rules engine still produces a full
-                Colorado / California eligibility report without any AI key —
-                AI just adds a parent-friendly narrative on top.
+                eligibility report for any of the 6 supported states without
+                any AI key — AI just adds a parent-friendly narrative on top.
               </p>
             </div>
           </div>
@@ -316,6 +357,117 @@ export default function SettingsPage() {
 interface PresetItem {
   id: string;
   label: string;
+}
+
+/**
+ * Per-1M-token rough USD pricing for typical models. Used as a coarse
+ * estimator only — actual prices change frequently.
+ */
+const PRICE_TABLE: Record<string, { in: number; out: number }> = {
+  "gpt-5.5": { in: 5, out: 15 },
+  "gpt-5.4-mini": { in: 0.6, out: 2.4 },
+  "gpt-5.4-nano": { in: 0.15, out: 0.6 },
+  "gpt-4.1": { in: 5, out: 15 },
+  "gpt-4.1-mini": { in: 0.6, out: 2.4 },
+  "gpt-4o-mini": { in: 0.15, out: 0.6 },
+  "claude-opus-4-7": { in: 15, out: 75 },
+  "claude-sonnet-4-6": { in: 3, out: 15 },
+  "claude-haiku-4-5": { in: 0.8, out: 4 },
+  "anthropic/claude-sonnet-4.6": { in: 3, out: 15 },
+  "anthropic/claude-opus-4.7": { in: 15, out: 75 },
+  "openai/gpt-5.5": { in: 5, out: 15 },
+  "google/gemini-3-flash-preview": { in: 0.3, out: 1.2 },
+  "z-ai/glm-5.1": { in: 0.5, out: 2 },
+  "deepseek/deepseek-v4-pro": { in: 0.5, out: 2 },
+  "moonshotai/kimi-k2.6": { in: 0.5, out: 2 },
+  "gpt-oss:120b": { in: 0, out: 0 },
+};
+
+function CostEstimator({ settings }: { settings: ClientAISettings }) {
+  const summary = useMemo(() => {
+    const provider = settings.provider === "auto"
+      ? hasAnyKey(settings)
+        ? (["openai", "anthropic", "openrouter", "ollama"] as AIProvider[]).find(
+            (p) => providerKey(settings, p),
+          ) ?? "openai"
+        : null
+      : settings.provider;
+    if (!provider) return null;
+    const model =
+      provider === "openai"
+        ? settings.openaiModel
+        : provider === "anthropic"
+          ? settings.anthropicModel
+          : provider === "openrouter"
+            ? settings.openrouterModel
+            : settings.ollamaModel;
+    const price = PRICE_TABLE[model];
+    if (!price) return { provider, model, costPerAnalysis: null as null };
+    // Typical usage: ~3000 input tokens (doc + payload), ~800 output tokens.
+    const cost = (3000 * price.in + 800 * price.out) / 1_000_000;
+    return { provider, model, costPerAnalysis: cost };
+  }, [settings]);
+
+  return (
+    <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-5 text-sm text-slate-600">
+      <div className="flex items-start gap-3">
+        <DollarSign className="mt-0.5 h-4 w-4 flex-shrink-0 text-accent-600" />
+        <div>
+          <p className="font-semibold text-slate-900">Approximate cost</p>
+          {!summary && (
+            <p className="mt-1">
+              No provider with a key yet — running on the free deterministic
+              rules engine.
+            </p>
+          )}
+          {summary && summary.costPerAnalysis !== null && (
+            <p className="mt-1">
+              ~<strong>{formatCost(summary.costPerAnalysis)}</strong> per typical
+              analysis (3K input / 800 output tokens) using{" "}
+              <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">
+                {summary.provider}:{summary.model}
+              </code>
+              . Chat replies and goal reviews are usually cheaper.
+            </p>
+          )}
+          {summary && summary.costPerAnalysis === null && (
+            <p className="mt-1">
+              Pricing for{" "}
+              <code className="rounded bg-slate-100 px-1.5 py-0.5 text-xs">
+                {summary.model}
+              </code>{" "}
+              isn't in our table — check the provider's pricing page for a
+              quote.
+            </p>
+          )}
+          <p className="mt-2 text-[11px] text-slate-400">
+            Estimates only — actual provider pricing may differ. Rules engine
+            is always free.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function formatCost(usd: number): string {
+  if (usd < 0.001) return "<$0.001";
+  if (usd < 0.01) return `$${usd.toFixed(4)}`;
+  if (usd < 1) return `$${usd.toFixed(3)}`;
+  return `$${usd.toFixed(2)}`;
+}
+
+function providerKey(s: ClientAISettings, p: AIProvider): string {
+  switch (p) {
+    case "openai":
+      return s.openaiKey;
+    case "anthropic":
+      return s.anthropicKey;
+    case "openrouter":
+      return s.openrouterKey;
+    case "ollama":
+      return s.ollamaKey;
+  }
 }
 
 function ProviderSection({

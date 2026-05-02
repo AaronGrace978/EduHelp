@@ -81,3 +81,45 @@ body {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* Print styles — used by /analyze "Print" button and the templates page. */
+@media print {
+  /* Hide chrome */
+  header,
+  footer,
+  nav,
+  .print\:hidden,
+  button {
+    display: none !important;
+  }
+
+  /* Make report use full width and remove sticky / animations */
+  body,
+  html {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .container-page {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .card {
+    box-shadow: none !important;
+    border-color: #d1d5db !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  pre,
+  code {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+  }
+
+  a {
+    color: #0f6bdc !important;
+    text-decoration: underline !important;
+  }
+}

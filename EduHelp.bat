@@ -16,19 +16,21 @@ echo   1.  First-time setup  (install dependencies)
 echo   2.  Start dev server  (http://localhost:3000)
 echo   3.  Build for production
 echo   4.  Start production server
-echo   5.  Open .env.local in Notepad (add API keys)
-echo   6.  Open project folder in Explorer
-echo   7.  Quit
+echo   5.  Create portable ZIP  (share — Node 20+ only)
+echo   6.  Open .env.local in Notepad (add API keys)
+echo   7.  Open project folder in Explorer
+echo   8.  Quit
 echo.
-set /p choice=  Choose 1-7:  
+set /p choice=  Choose 1-8:  
 
 if "%choice%"=="1" goto setup
 if "%choice%"=="2" goto dev
 if "%choice%"=="3" goto build
 if "%choice%"=="4" goto start
-if "%choice%"=="5" goto envedit
-if "%choice%"=="6" goto folder
-if "%choice%"=="7" goto end
+if "%choice%"=="5" goto release
+if "%choice%"=="6" goto envedit
+if "%choice%"=="7" goto folder
+if "%choice%"=="8" goto end
 
 echo  Invalid choice.
 timeout /t 1 >nul
@@ -48,6 +50,10 @@ goto menu
 
 :start
 call start.bat
+goto menu
+
+:release
+call release.bat
 goto menu
 
 :envedit

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { load } from "cheerio";
 import { SCRAPE_TARGETS, STATIC_RESOURCES } from "@/lib/resources/static";
-import type { StateCode } from "@/lib/eligibility/types";
+import { SUPPORTED_STATES, type StateCode } from "@/lib/eligibility/types";
 
 export const runtime = "nodejs";
 export const revalidate = 60 * 60 * 6;
@@ -55,9 +55,9 @@ async function scrapeHeadlines(url: string): Promise<ScrapedHeadline[]> {
 
 export async function GET(req: NextRequest) {
   const stateRaw = (req.nextUrl.searchParams.get("state") ?? "CO").toUpperCase();
-  if (stateRaw !== "CO" && stateRaw !== "CA") {
+  if (!SUPPORTED_STATES.includes(stateRaw as StateCode)) {
     return NextResponse.json(
-      { error: "state must be CO or CA" },
+      { error: `state must be one of: ${SUPPORTED_STATES.join(", ")}` },
       { status: 400 },
     );
   }

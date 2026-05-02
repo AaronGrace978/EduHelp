@@ -13,7 +13,11 @@ import {
   Building2,
 } from "lucide-react";
 import { StateToggle } from "@/components/analyze/StateToggle";
-import type { StateCode } from "@/lib/eligibility/types";
+import {
+  STATE_NAMES,
+  SUPPORTED_STATES,
+  type StateCode,
+} from "@/lib/eligibility/types";
 import type { ResourceLink } from "@/lib/resources/static";
 
 interface ApiResponse {
@@ -55,9 +59,12 @@ function ResourcesPageInner() {
   const params = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const initial = (params.get("state") ?? "CO").toUpperCase() as StateCode;
+  const initialRaw = (params.get("state") ?? "CO").toUpperCase();
+  const initial: StateCode = SUPPORTED_STATES.includes(initialRaw as StateCode)
+    ? (initialRaw as StateCode)
+    : "CO";
 
-  const [state, setState] = useState<StateCode>(initial === "CA" ? "CA" : "CO");
+  const [state, setState] = useState<StateCode>(initial);
   const [data, setData] = useState<ApiResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -93,12 +100,13 @@ function ResourcesPageInner() {
           The right people, agencies, and laws — by state.
         </h1>
         <p className="mt-3 text-base leading-relaxed text-slate-600">
-          Hand-picked resources for Colorado and California families, plus
-          live-scraped headlines from the state Department of Education.
+          Hand-picked resources for Colorado, California, Texas, New York,
+          Florida, and Illinois families, plus live-scraped headlines from
+          state Departments of Education.
         </p>
       </div>
 
-      <div className="mx-auto mt-8 max-w-md">
+      <div className="mx-auto mt-8 max-w-2xl">
         <StateToggle value={state} onChange={changeState} />
       </div>
 
@@ -107,8 +115,7 @@ function ResourcesPageInner() {
           Trusted organizations
         </h2>
         <p className="mt-1 text-sm text-slate-600">
-          Free help, advocacy, and legal aid for families in{" "}
-          {state === "CO" ? "Colorado" : "California"}.
+          Free help, advocacy, and legal aid for families in {STATE_NAMES[state]}.
         </p>
         <div className="mt-5 grid gap-4 md:grid-cols-2">
           {(data?.static ?? []).map((r) => {
@@ -153,8 +160,8 @@ function ResourcesPageInner() {
               Live from state DOE pages
             </h2>
             <p className="mt-1 text-sm text-slate-600">
-              Headlines scraped on demand from{" "}
-              {state === "CO" ? "cde.state.co.us" : "cde.ca.gov"} (cached 6 hrs).
+              Headlines scraped on demand from the {STATE_NAMES[state]} Department
+              of Education (cached 6 hrs).
             </p>
           </div>
           {loading && (
