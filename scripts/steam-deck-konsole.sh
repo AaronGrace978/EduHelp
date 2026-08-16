@@ -1,22 +1,19 @@
 #!/usr/bin/env bash
 # Aaron Grace, M.Ed. — Steam Deck Konsole installer / launcher
 #
-# FROM HOME ON STEAM DECK (no git clone):
-#   export GH_TOKEN=ghp_xxx
-#   ASSET_API=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
-#     https://api.github.com/repos/AaronGrace978/EduHelp/releases/tags/v1.0.0 \
-#     | python3 -c 'import sys,json; a=json.load(sys.stdin)["assets"]; print(next(x["url"] for x in a if x["name"]=="steam-deck-konsole.sh"))')
-#   curl -fL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/octet-stream" \
-#     -o ~/steam-deck-konsole.sh "$ASSET_API"
-#   chmod +x ~/steam-deck-konsole.sh && GH_TOKEN=$GH_TOKEN bash ~/steam-deck-konsole.sh
+# PUBLIC REPO — paste in Konsole from home (~):
+#   curl -fsSL -o ~/steam-deck-konsole.sh \
+#     https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/steam-deck-konsole.sh
+#   chmod +x ~/steam-deck-konsole.sh
+#   bash ~/steam-deck-konsole.sh
 #
-# FROM A REPO CLONE:
+# Or from a clone:
 #   bash scripts/steam-deck-konsole.sh
 #
 # Optional:
-#   APPIMAGE=/path/to/file.AppImage bash steam-deck-konsole.sh
-#   bash steam-deck-konsole.sh --launch-only
-#   bash steam-deck-konsole.sh --no-launch
+#   APPIMAGE=/path/to/file.AppImage bash ~/steam-deck-konsole.sh
+#   bash ~/steam-deck-konsole.sh --launch-only
+#   bash ~/steam-deck-konsole.sh --no-launch
 
 set -euo pipefail
 
@@ -29,6 +26,8 @@ INSTALL_DIR="${INSTALL_DIR:-$HOME/Applications/${APP_SLUG}}"
 DESKTOP_DIR="${XDG_DESKTOP_DIR:-$HOME/Desktop}"
 APPIMAGE_NAME="${APP_SLUG}-${VERSION}-amd64.AppImage"
 INSTALLED_APPIMAGE="${INSTALL_DIR}/${APPIMAGE_NAME}"
+# Direct public release URL (no token)
+PUBLIC_APPIMAGE_URL="${PUBLIC_APPIMAGE_URL:-https://github.com/${REPO}/releases/download/${TAG}/Aaron.Grace.M.Ed._${VERSION}_amd64.AppImage}"
 LAUNCH_AFTER=1
 LAUNCH_ONLY=0
 
@@ -41,16 +40,14 @@ for arg in "$@"; do
 ${APP_NAME} — Steam Deck Konsole helper
 
 Usage:
-  bash $0                 Install (download or copy) + launch
+  bash $0                 Download AppImage + install + launch
   bash $0 --launch-only   Launch existing install only
   bash $0 --no-launch     Install only, do not launch
 
 Env:
-  APPIMAGE=/path/to.AppImage   Use a local AppImage instead of GitHub
-  GH_TOKEN=...                 Token for private release downloads
-  VERSION=1.0.0                Release version
-  TAG=v1.0.0                   Release tag override
-  REPO=AaronGrace978/EduHelp   GitHub repo
+  APPIMAGE=/path/to.AppImage   Use a local file instead of downloading
+  VERSION=1.0.0
+  TAG=v1.0.0
 EOF
       exit 0
       ;;
@@ -70,7 +67,7 @@ detect_deck() {
   if [[ -f /etc/os-release ]] && grep -qi 'steam\|holo' /etc/os-release; then
     ok "SteamOS / Deck-like environment detected"
   else
-    warn "Not clearly SteamOS — continuing anyway (works on most Linux desktops)"
+    warn "Not clearly SteamOS — continuing anyway"
   fi
 }
 
@@ -79,37 +76,32 @@ ensure_fuse() {
     ok "FUSE available for AppImage"
     return
   fi
-  warn "No /dev/fuse — AppImage may need: flatpak / extract mode"
-  warn "On Deck Desktop, AppImages usually still work."
+  warn "No /dev/fuse — AppImage may still work on Deck Desktop"
 }
 
-download_from_github() {
+download_appimage() {
   local dest="$1"
-  local api="https://api.github.com/repos/${REPO}/releases/tags/${TAG}"
-  local auth=()
-  if [[ -n "${GH_TOKEN:-}" ]]; then
-    auth=(-H "Authorization: Bearer ${GH_TOKEN}" -H "X-GitHub-Api-Version: 2022-11-28")
-  fi
-
-  say "Looking up release ${TAG} on ${REPO}"
   need_cmd curl
-  need_cmd python3
-
-  local json
-  if ! json="$(curl -fsSL "${auth[@]}" -H "Accept: application/vnd.github+json" "$api")"; then
-    die "Could not fetch release ${TAG}. For a private repo set GH_TOKEN, or pass APPIMAGE=/path/to.AppImage"
+  say "Downloading AppImage (public release ${TAG})"
+  echo "    ${PUBLIC_APPIMAGE_URL}"
+  if curl -fL --retry 3 --retry-delay 2 -o "$dest" "$PUBLIC_APPIMAGE_URL"; then
+    ok "Downloaded to ${dest}"
+    return
   fi
 
-  local url
+  # Fallback: query release API for any amd64 AppImage (public, no token)
+  say "Direct URL failed — looking up AppImage on release API"
+  need_cmd python3
+  local api="https://api.github.com/repos/${REPO}/releases/tags/${TAG}"
+  local json url
+  json="$(curl -fsSL -H "Accept: application/vnd.github+json" "$api")" \
+    || die "Could not fetch ${TAG}. Open https://github.com/${REPO}/releases/tag/${TAG} in Firefox and download the AppImage."
+
   url="$(python3 - "$json" <<'PY'
 import json, sys
 data = json.loads(sys.argv[1])
-assets = data.get("assets") or []
-prefer = ("appimage", "amd64", "x86_64", "linux")
-picked = None
-# Prefer CI-named AppImage, then any AppImage
 ranked = []
-for a in assets:
+for a in data.get("assets") or []:
     name = (a.get("name") or "")
     lower = name.lower()
     if not lower.endswith(".appimage"):
@@ -119,22 +111,16 @@ for a in assets:
         score += 2
     if "aaron.grace" in lower or "aarongrace" in lower:
         score += 1
-    ranked.append((score, a))
+    ranked.append((score, a.get("browser_download_url") or ""))
 ranked.sort(key=lambda t: t[0], reverse=True)
-if not ranked:
-    raise SystemExit("no AppImage asset on release")
-picked = ranked[0][1]
-print(picked["url"])
-print(picked.get("name") or "AaronGrace-MEd.AppImage")
+if not ranked or not ranked[0][1]:
+    raise SystemExit(1)
+print(ranked[0][1])
 PY
-)" || die "No AppImage asset found on ${TAG}. Publish the Linux build first."
+)" || die "No AppImage on ${TAG}."
 
-  local asset_api asset_name
-  asset_api="$(printf '%s\n' "$url" | sed -n '1p')"
-  asset_name="$(printf '%s\n' "$url" | sed -n '2p')"
-
-  say "Downloading ${asset_name}"
-  curl -fL "${auth[@]}" -H "Accept: application/octet-stream" "$asset_api" -o "$dest"
+  say "Downloading ${url}"
+  curl -fL --retry 3 -o "$dest" "$url" || die "Download failed"
   ok "Downloaded to ${dest}"
 }
 
@@ -143,8 +129,6 @@ install_desktop_entry() {
   local apps_file="${HOME}/.local/share/applications/${APP_SLUG}.desktop"
   mkdir -p "$DESKTOP_DIR" "${HOME}/.local/share/applications"
 
-  local exec_line="${INSTALLED_APPIMAGE}"
-  # Prefer launching via this script so env stays consistent
   local helper="${INSTALL_DIR}/launch.sh"
   cat >"$helper" <<EOF
 #!/usr/bin/env bash
@@ -167,16 +151,14 @@ EOF
   cp "$apps_file" "$desktop_file"
   chmod +x "$desktop_file" "$apps_file" || true
   ok "Desktop launcher: ${desktop_file}"
-  ok "App menu entry: ${apps_file}"
 }
 
 launch_app() {
   [[ -x "$INSTALLED_APPIMAGE" ]] || die "Not installed yet: ${INSTALLED_APPIMAGE}"
   say "Launching ${APP_NAME}"
-  # Detach from Konsole so closing the terminal doesn't kill the app
   nohup "$INSTALLED_APPIMAGE" >/tmp/${APP_SLUG}.log 2>&1 &
   ok "Started (log: /tmp/${APP_SLUG}.log)"
-  ok "Tip: in Desktop Mode, pin the desktop icon — or Add Non-Steam Game → pick the AppImage"
+  ok "Tip: Add Non-Steam Game → ${INSTALLED_APPIMAGE}"
 }
 
 install_app() {
@@ -191,7 +173,7 @@ install_app() {
   elif [[ -f "$INSTALLED_APPIMAGE" ]]; then
     ok "Existing install found — refreshing desktop entry"
   else
-    download_from_github "$INSTALLED_APPIMAGE"
+    download_appimage "$INSTALLED_APPIMAGE"
   fi
 
   chmod +x "$INSTALLED_APPIMAGE"
