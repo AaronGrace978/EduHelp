@@ -71,12 +71,23 @@ jobs:
           releaseBody: |
             Desktop release of **Aaron Grace, M.Ed.** — Ellucian Banner, PowerFAIDS, disability support, Amazon textbooks, Rate My Professor, and the world college directory.
 
-            ### Downloads
-            - **macOS**: `.dmg` / `.app` (Apple Silicon + Intel builds)
-            - **Windows**: `.msi` / `.exe` installer
-            - **Linux**: `.AppImage` / `.deb`
+            ### Downloads by platform
+            | Platform | Grab |
+            | -------- | ---- |
+            | macOS Apple Silicon | `.dmg` (`aarch64`) |
+            | macOS Intel | `.dmg` (`x64`) |
+            | Windows | `.msi` / `.exe` |
+            | Linux | `.AppImage` (recommended) / `.deb` / `.rpm` |
+            | Steam Deck | Linux `.AppImage` + `scripts/steam-deck-konsole.sh` |
 
-            See the assets attached to this release.
+            Full guide: `DOWNLOADS.md` in the repo.
+
+            ### Steam Deck (Konsole)
+            ```bash
+            bash scripts/steam-deck-konsole.sh
+            # private repo:
+            GH_TOKEN=... bash scripts/steam-deck-konsole.sh
+            ```
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
