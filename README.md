@@ -22,6 +22,18 @@ Selecting a college personalizes the rest of the app.
 
 ---
 
+## Downloads (Mac / Linux / Windows / Steam Deck)
+
+See **[DOWNLOADS.md](DOWNLOADS.md)** for the per-platform installer table and Steam Deck Konsole steps.
+
+Steam Deck (Desktop Mode → Konsole):
+
+```bash
+bash scripts/steam-deck-konsole.sh
+```
+
+---
+
 ## Stack
 
 - [Tauri 2](https://tauri.app) (Rust shell + system webview)
