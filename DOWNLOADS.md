@@ -1,85 +1,77 @@
 # Aaron Grace, M.Ed. — Downloads (v1.0.0)
 
-Official desktop builds ship as **GitHub Release** assets on tag `v1.0.0`.
+**Draft release (publish when ready):**  
+https://github.com/AaronGrace978/EduHelp/releases/tag/untagged-1a64b0aff3e19ebc4b33
 
-**Release page:** https://github.com/AaronGrace978/EduHelp/releases (draft **Aaron Grace, M.Ed. v1.0.0**)
-
-Linux assets already attached to the draft:
-
-- [AaronGrace-MEd-1.0.0-amd64.AppImage](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/AaronGrace-MEd-1.0.0-amd64.AppImage) (preferred for Steam Deck)
-- [AaronGrace-MEd-1.0.0-amd64.deb](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/AaronGrace-MEd-1.0.0-amd64.deb)
-- [AaronGrace-MEd-1.0.0-1.x86_64.rpm](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/AaronGrace-MEd-1.0.0-1.x86_64.rpm)
-
-> Draft releases may use an `untagged-…` URL until published. Mac / Windows installers attach when the `release` GitHub Action finishes.
+> Repo is **private** — sign into GitHub (or use `GH_TOKEN`) to download.  
+> After you click **Publish release**, links become `/releases/download/v1.0.0/…`.
 
 ---
 
-## What to download
+## Downloads by platform
 
-| Platform | Download asset (look for these names on the release) | Notes |
-| -------- | ---------------------------------------------------- | ----- |
-| **macOS Apple Silicon** (M1/M2/M3/M4) | `Aaron Grace M.Ed._1.0.0_aarch64.dmg` | Open `.dmg`, drag app to Applications |
-| **macOS Intel** | `Aaron Grace M.Ed._1.0.0_x64.dmg` | Same install flow |
-| **Windows x64** | `Aaron Grace M.Ed._1.0.0_x64_en-US.msi` (or `.exe`) | Run installer; allow SmartScreen if prompted |
-| **Linux x64 (.AppImage)** | `Aaron Grace M.Ed._1.0.0_amd64.AppImage` | `chmod +x` then double-click / run |
-| **Linux x64 (.deb)** | `Aaron Grace M.Ed._1.0.0_amd64.deb` | Debian/Ubuntu: `sudo dpkg -i …` |
-| **Linux x64 (.rpm)** | `Aaron Grace M.Ed.-1.0.0-1.x86_64.rpm` | Fedora/RHEL: `sudo rpm -i …` |
-| **Steam Deck** | Linux **AppImage** + Konsole script below | Desktop Mode |
+| Platform | File | Link |
+| -------- | ---- | ---- |
+| **macOS Apple Silicon** | `Aaron.Grace.M.Ed._1.0.0_aarch64.dmg` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_aarch64.dmg) |
+| **macOS Intel** | `Aaron.Grace.M.Ed._1.0.0_x64.dmg` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_x64.dmg) |
+| **Windows installer** | `Aaron.Grace.M.Ed._1.0.0_x64_en-US.msi` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_x64_en-US.msi) |
+| **Windows setup** | `Aaron.Grace.M.Ed._1.0.0_x64-setup.exe` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_x64-setup.exe) |
+| **Linux AppImage** (Deck / portable) | `Aaron.Grace.M.Ed._1.0.0_amd64.AppImage` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_amd64.AppImage) |
+| **Linux .deb** | `Aaron.Grace.M.Ed._1.0.0_amd64.deb` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_amd64.deb) |
+| **Linux .rpm** | `Aaron.Grace.M.Ed.-1.0.0-1.x86_64.rpm` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed.-1.0.0-1.x86_64.rpm) |
 
-Exact filenames can vary slightly by Tauri bundler version — prefer the asset whose name matches your OS/arch.
+Optional macOS app archives: `_aarch64.app.tar.gz` / `_x64.app.tar.gz` on the same release page.
 
 ---
 
-## Steam Deck (Konsole)
+## Install notes
 
-1. Switch to **Desktop Mode**.
-2. Open **Konsole**.
-3. From a clone of this repo:
+### macOS
+Open the `.dmg` → drag **Aaron Grace M.Ed.** into Applications → launch (right-click → Open the first time if Gatekeeper prompts).
+
+### Windows
+Run the `.msi` or `_x64-setup.exe`. Allow SmartScreen / UAC if prompted.
+
+### Linux
+```bash
+chmod +x Aaron.Grace.M.Ed._1.0.0_amd64.AppImage
+./Aaron.Grace.M.Ed._1.0.0_amd64.AppImage
+```
+Or: `sudo dpkg -i Aaron.Grace.M.Ed._1.0.0_amd64.deb`
+
+---
+
+## Steam Deck — Konsole script
+
+Desktop Mode → open **Konsole**:
 
 ```bash
+# from a clone of this repo
 bash scripts/steam-deck-konsole.sh
 ```
 
-Or copy `scripts/steam-deck-konsole.sh` to the Deck and run it.
-
-**Private release download**
+**Private download with token**
 
 ```bash
 GH_TOKEN=YOUR_GITHUB_TOKEN bash scripts/steam-deck-konsole.sh
 ```
 
-**Already have the AppImage**
+**Already downloaded the AppImage**
 
 ```bash
-APPIMAGE=~/Downloads/AaronGrace-MEd-1.0.0-amd64.AppImage bash scripts/steam-deck-konsole.sh
+APPIMAGE=~/Downloads/Aaron.Grace.M.Ed._1.0.0_amd64.AppImage bash scripts/steam-deck-konsole.sh
 ```
 
-The script installs to `~/Applications/AaronGrace-MEd/`, drops a Desktop launcher, and starts the app.
+What the script does:
+- installs into `~/Applications/AaronGrace-MEd/`
+- creates a Desktop + app-menu launcher
+- launches the app (use `--launch-only` later, `--no-launch` to skip)
 
-**Launch later**
-
-```bash
-bash scripts/steam-deck-konsole.sh --launch-only
-```
-
-**Add to Steam (Game Mode)**  
-Steam → Games → Add a Non-Steam Game → Browse → select the AppImage under `~/Applications/AaronGrace-MEd/`.
+**Add to Game Mode:** Steam → Games → Add a Non-Steam Game → browse to the AppImage under `~/Applications/AaronGrace-MEd/`.
 
 ---
 
-## How the release assets are produced
+## Rebuild / republish
 
-GitHub Actions workflow: [`.github/workflows/release.yml`](.github/workflows/release.yml)
-
-Triggers:
-
-- Tag push: `v1.0.0`
-- Push to `release` branch
-- Manual: Actions → **release** → Run workflow
-
-Builds:
-
-- macOS `aarch64-apple-darwin`
-- macOS `x86_64-apple-darwin`
-- Linux `ubuntu-22.04`
-- Windows `windows-latest`
+Workflow: [`.github/workflows/release.yml`](.github/workflows/release.yml)  
+Latest successful multi-platform run: https://github.com/AaronGrace978/EduHelp/actions/runs/31961738923
