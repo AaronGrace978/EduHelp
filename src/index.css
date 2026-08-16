@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --bg: #f4f7fa;
+  --ink: #0c1824;
+  --pine: #145750;
+  --brass: #c4a35a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Outfit", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@layer components {
+  .shell {
+    @apply min-h-screen bg-atmosphere text-ink-900;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-ink-200/80 bg-white/75 backdrop-blur-sm;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-pine-700 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-pine-600 focus:outline-none focus-visible:ring-4 focus-visible:ring-pine-200 disabled:cursor-not-allowed disabled:opacity-55;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-200 bg-white/90 px-4 py-2.5 text-sm font-semibold text-ink-800 transition hover:border-pine-300 hover:bg-pine-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-ink-100;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-ink-600 transition hover:bg-ink-100/80 hover:text-ink-900;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-ink-200 bg-white px-3.5 py-2.5 text-sm text-ink-900 outline-none transition placeholder:text-ink-400 focus:border-pine-400 focus:ring-4 focus:ring-pine-100;
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-semibold uppercase tracking-[0.08em] text-ink-500;
+  }
+
+  .section-kicker {
+    @apply text-xs font-semibold uppercase tracking-[0.14em] text-pine-600;
+  }
+
+  .display-title {
+    @apply font-display text-3xl font-semibold tracking-tight text-ink-950 sm:text-4xl;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(20, 87, 80, 0.28);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}

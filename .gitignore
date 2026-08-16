@@ -1,40 +1,34 @@
-# Local helper files
-.git-commit-msg.tmp
-
-node_modules/
-.pnp
-.pnp.js
-
-.next/
-out/
-build/
-dist/
-
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
 
+node_modules
+dist
+dist-ssr
+*.local
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Tauri / Rust
+src-tauri/target
+src-tauri/gen/schemas
+
+# OS
 Thumbs.db
-.idea/
-.vscode/
-
-*.tsbuildinfo
-next-env.d.ts
-.vercel
-
-/uploads/
-/tmp/
-
-# Demo videos / large binaries — keep out of git, ship via Releases instead
-*.mp4
-*.mov
-*.zip
-EduHelp-standalone-*
