@@ -60,7 +60,30 @@ Open [http://localhost:1420](http://localhost:1420).
 npm run tauri build
 ```
 
-Artifacts land under `src-tauri/target/release/bundle/`.
+Artifacts land under `src-tauri/target/release/bundle/` (platform-specific `.dmg` / `.msi` / `.AppImage` / `.deb`).
+
+### Multi-platform GitHub Release (Mac / Linux / Windows)
+
+This repo includes [`.github/workflows/release.yml`](.github/workflows/release.yml), which builds:
+
+| Platform | Artifacts |
+| -------- | --------- |
+| macOS Apple Silicon | `.dmg` / app bundle |
+| macOS Intel | `.dmg` / app bundle |
+| Linux x64 | `.AppImage` / `.deb` |
+| Windows x64 | `.msi` / `.exe` |
+
+**Publish a draft release**
+
+1. Merge to `main`.
+2. In GitHub → **Settings → Actions → General → Workflow permissions**, enable **Read and write permissions**.
+3. Either:
+   - push a version tag: `git tag v1.0.0 && git push origin v1.0.0`, or
+   - push/merge to a `release` branch, or
+   - run **Actions → release → Run workflow**.
+4. Open the draft release on the Releases page, review assets, and publish.
+
+Version is read from `src-tauri/tauri.conf.json` / `package.json` (`1.0.0`).
 
 ---
 
