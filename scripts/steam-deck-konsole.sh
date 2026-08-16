@@ -16,7 +16,7 @@ set -euo pipefail
 
 APP_NAME="Aaron Grace, M.Ed."
 APP_SLUG="AaronGrace-MEd"
-VERSION="${VERSION:-1.0.0}"
+VERSION="${VERSION:-1.1.0}"
 REPO="${REPO:-AaronGrace978/EduHelp}"
 TAG="${TAG:-v${VERSION}}"
 INSTALL_DIR="${INSTALL_DIR:-$HOME/Applications/${APP_SLUG}}"
@@ -42,8 +42,8 @@ Usage:
 Env:
   APPIMAGE=/path/to.AppImage   Use a local AppImage instead of GitHub
   GH_TOKEN=...                 Token for private release downloads
-  VERSION=1.0.0                Release version
-  TAG=v1.0.0                   Release tag override
+  VERSION=1.1.0                Release version
+  TAG=v1.1.0                   Release tag override
   REPO=AaronGrace978/EduHelp   GitHub repo
 EOF
       exit 0

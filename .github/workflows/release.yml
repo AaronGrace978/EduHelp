@@ -69,7 +69,14 @@ jobs:
           tagName: v__VERSION__
           releaseName: "Aaron Grace, M.Ed. v__VERSION__"
           releaseBody: |
-            Desktop release of **Aaron Grace, M.Ed.** — Ellucian Banner, PowerFAIDS, disability support, Amazon textbooks, Rate My Professor, and the world college directory.
+            Desktop release of **Aaron Grace, M.Ed.** — the go-to education administration toolkit for the whole campus ecosystem.
+
+            ### What's in this release
+            - **Org Hierarchy** — Board → President → Provost/VPs → Deans → Directors
+            - **Workload** — administrative queues assigned to hierarchy roles
+            - **System Harness** — Banner, PowerFAIDS, Oracle, SQL Server, PeopleSoft, Colleague, Workday
+            - **Professor Mirror** — AI stand-in when faculty are unavailable + TAs / graders / SI leaders
+            - Banner, PowerFAIDS, disability support, textbooks, Rate My Professor, world college directory
 
             ### Downloads by platform
             | Platform | Grab |

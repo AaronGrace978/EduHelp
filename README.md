@@ -94,12 +94,12 @@ This repo includes [`.github/workflows/release.yml`](.github/workflows/release.y
 1. Merge to `main`.
 2. In GitHub → **Settings → Actions → General → Workflow permissions**, enable **Read and write permissions**.
 3. Either:
-   - push a version tag: `git tag v1.0.0 && git push origin v1.0.0`, or
+   - push a version tag: `git tag v1.1.0 && git push origin v1.1.0`, or
    - push/merge to a `release` branch, or
    - run **Actions → release → Run workflow**.
 4. Open the draft release on the Releases page, review assets, and publish.
 
-Version is read from `src-tauri/tauri.conf.json` / `package.json` (`1.0.0`).
+Version is read from `src-tauri/tauri.conf.json` / `package.json` (`1.1.0`).
 
 ---
 
