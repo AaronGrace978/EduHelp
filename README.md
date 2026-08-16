@@ -26,11 +26,20 @@ Selecting a college personalizes the rest of the app.
 
 See **[DOWNLOADS.md](DOWNLOADS.md)** for the per-platform installer table and Steam Deck Konsole steps.
 
-Steam Deck (Desktop Mode → Konsole):
+Steam Deck (Desktop Mode → Konsole) — **no git clone**; run from `~`:
 
 ```bash
-bash scripts/steam-deck-konsole.sh
+export GH_TOKEN=ghp_YOUR_TOKEN
+ASSET_API=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+  https://api.github.com/repos/AaronGrace978/EduHelp/releases/tags/v1.0.0 \
+  | python3 -c 'import sys,json; a=json.load(sys.stdin)["assets"]; print(next(x["url"] for x in a if x["name"]=="steam-deck-konsole.sh"))')
+curl -fL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/octet-stream" \
+  -o ~/steam-deck-konsole.sh "$ASSET_API"
+chmod +x ~/steam-deck-konsole.sh
+GH_TOKEN="$GH_TOKEN" bash ~/steam-deck-konsole.sh
 ```
+
+See **[DOWNLOADS.md](DOWNLOADS.md)** for Mac / Windows / Linux links.
 
 ---
 

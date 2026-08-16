@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
 # Aaron Grace, M.Ed. — Steam Deck Konsole installer / launcher
 #
-# Desktop Mode → open Konsole → run:
+# FROM HOME ON STEAM DECK (no git clone):
+#   export GH_TOKEN=ghp_xxx
+#   ASSET_API=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+#     https://api.github.com/repos/AaronGrace978/EduHelp/releases/tags/v1.0.0 \
+#     | python3 -c 'import sys,json; a=json.load(sys.stdin)["assets"]; print(next(x["url"] for x in a if x["name"]=="steam-deck-konsole.sh"))')
+#   curl -fL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/octet-stream" \
+#     -o ~/steam-deck-konsole.sh "$ASSET_API"
+#   chmod +x ~/steam-deck-konsole.sh && GH_TOKEN=$GH_TOKEN bash ~/steam-deck-konsole.sh
+#
+# FROM A REPO CLONE:
 #   bash scripts/steam-deck-konsole.sh
-# Or after download:
-#   bash steam-deck-konsole.sh
 #
 # Optional:
 #   APPIMAGE=/path/to/file.AppImage bash steam-deck-konsole.sh
-#   GH_TOKEN=ghp_xxx bash steam-deck-konsole.sh   # private-repo download
 #   bash steam-deck-konsole.sh --launch-only
 #   bash steam-deck-konsole.sh --no-launch
 
