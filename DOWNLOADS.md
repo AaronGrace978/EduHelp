@@ -1,10 +1,8 @@
 # Aaron Grace, M.Ed. — Downloads (v1.0.0)
 
-**Draft release (publish when ready):**  
-https://github.com/AaronGrace978/EduHelp/releases/tag/untagged-1a64b0aff3e19ebc4b33
+**Release:** https://github.com/AaronGrace978/EduHelp/releases/tag/v1.0.0
 
-> Repo is **private** — sign into GitHub (or use `GH_TOKEN`) to download.  
-> After you click **Publish release**, links become `/releases/download/v1.0.0/…`.
+> Repo is **private** — sign into GitHub (or use `GH_TOKEN`) to download.
 
 ---
 
@@ -12,13 +10,13 @@ https://github.com/AaronGrace978/EduHelp/releases/tag/untagged-1a64b0aff3e19ebc4
 
 | Platform | File | Link |
 | -------- | ---- | ---- |
-| **macOS Apple Silicon** | `Aaron.Grace.M.Ed._1.0.0_aarch64.dmg` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_aarch64.dmg) |
-| **macOS Intel** | `Aaron.Grace.M.Ed._1.0.0_x64.dmg` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_x64.dmg) |
-| **Windows installer** | `Aaron.Grace.M.Ed._1.0.0_x64_en-US.msi` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_x64_en-US.msi) |
-| **Windows setup** | `Aaron.Grace.M.Ed._1.0.0_x64-setup.exe` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_x64-setup.exe) |
-| **Linux AppImage** (Deck / portable) | `Aaron.Grace.M.Ed._1.0.0_amd64.AppImage` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_amd64.AppImage) |
-| **Linux .deb** | `Aaron.Grace.M.Ed._1.0.0_amd64.deb` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed._1.0.0_amd64.deb) |
-| **Linux .rpm** | `Aaron.Grace.M.Ed.-1.0.0-1.x86_64.rpm` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/untagged-1a64b0aff3e19ebc4b33/Aaron.Grace.M.Ed.-1.0.0-1.x86_64.rpm) |
+| **macOS Apple Silicon** | `Aaron.Grace.M.Ed._1.0.0_aarch64.dmg` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/Aaron.Grace.M.Ed._1.0.0_aarch64.dmg) |
+| **macOS Intel** | `Aaron.Grace.M.Ed._1.0.0_x64.dmg` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/Aaron.Grace.M.Ed._1.0.0_x64.dmg) |
+| **Windows installer** | `Aaron.Grace.M.Ed._1.0.0_x64_en-US.msi` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/Aaron.Grace.M.Ed._1.0.0_x64_en-US.msi) |
+| **Windows setup** | `Aaron.Grace.M.Ed._1.0.0_x64-setup.exe` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/Aaron.Grace.M.Ed._1.0.0_x64-setup.exe) |
+| **Linux AppImage** (Deck / portable) | `Aaron.Grace.M.Ed._1.0.0_amd64.AppImage` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/Aaron.Grace.M.Ed._1.0.0_amd64.AppImage) |
+| **Linux .deb** | `Aaron.Grace.M.Ed._1.0.0_amd64.deb` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/Aaron.Grace.M.Ed._1.0.0_amd64.deb) |
+| **Linux .rpm** | `Aaron.Grace.M.Ed.-1.0.0-1.x86_64.rpm` | [Download](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/Aaron.Grace.M.Ed.-1.0.0-1.x86_64.rpm) |
 
 Optional macOS app archives: `_aarch64.app.tar.gz` / `_x64.app.tar.gz` on the same release page.
 
