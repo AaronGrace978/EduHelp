@@ -11,6 +11,10 @@ const LABELS: Record<HistoryKind, string> = {
   disability: "Disability",
   books: "Books",
   rmp: "RMP",
+  hierarchy: "Hierarchy",
+  workload: "Workload",
+  connector: "Harness",
+  mirror: "Mirror",
   general: "General",
 };
 
@@ -24,8 +28,8 @@ export function HistoryPage() {
           <p className="section-kicker">Activity</p>
           <h1 className="display-title mt-2">Histories</h1>
           <p className="mt-3 max-w-2xl text-ink-500">
-            Everything you lock in — campus picks, Banner terms, aid lines, DSS drafts,
-            book orders, and professor notes — lives in one timeline.
+            Everything you lock in — hierarchy, workload, connectors, professor
+            mirrors, Banner, aid, DSS, books, and notes — lives in one timeline.
           </p>
         </div>
         <button

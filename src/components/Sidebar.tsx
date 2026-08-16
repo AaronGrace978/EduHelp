@@ -2,12 +2,16 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import {
   BookOpen,
+  Bot,
+  Cable,
+  ClipboardList,
   GraduationCap,
   HandHeart,
   History,
   Landmark,
   LayoutDashboard,
   Menu,
+  Network,
   Server,
   Star,
   Wallet,
@@ -19,6 +23,10 @@ import { useApp } from "@/context/AppContext";
 const NAV = [
   { to: "/", label: "Home", icon: LayoutDashboard, end: true },
   { to: "/colleges", label: "Colleges", icon: GraduationCap },
+  { to: "/hierarchy", label: "Org Hierarchy", icon: Network },
+  { to: "/workload", label: "Workload", icon: ClipboardList },
+  { to: "/harness", label: "System Harness", icon: Cable },
+  { to: "/mirror", label: "Professor Mirror", icon: Bot },
   { to: "/banner", label: "Ellucian Banner", icon: Server },
   { to: "/powerfaids", label: "PowerFAIDS", icon: Wallet },
   { to: "/disability", label: "Disability Support", icon: HandHeart },
@@ -48,7 +56,8 @@ function NavBody({ onNavigate }: { onNavigate?: () => void }) {
           </div>
         </div>
         <p className="mt-4 text-sm leading-relaxed text-ink-500">
-          The ultimate college toolkit — locked to your campus.
+          The go-to education administration toolkit — for the whole campus
+          ecosystem.
         </p>
       </div>
 

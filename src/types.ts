@@ -15,7 +15,171 @@ export type HistoryKind =
   | "disability"
   | "books"
   | "rmp"
+  | "hierarchy"
+  | "workload"
+  | "connector"
+  | "mirror"
   | "general";
+
+export type OrgRoleLevel =
+  | "governing_board"
+  | "president"
+  | "cabinet"
+  | "dean"
+  | "chair"
+  | "director"
+  | "coordinator"
+  | "faculty"
+  | "staff"
+  | "other";
+
+export type InstructionalRole =
+  | "professor"
+  | "associate_professor"
+  | "assistant_professor"
+  | "adjunct"
+  | "lecturer"
+  | "instructor"
+  | "ta"
+  | "grader"
+  | "si_leader"
+  | "tutor"
+  | "lab_assistant"
+  | "guest"
+  | "other";
+
+export type CoverageStatus =
+  | "available"
+  | "unavailable"
+  | "ai_covering"
+  | "ta_covering"
+  | "human_backup";
+
+export type MirrorCapability =
+  | "office_hours_qa"
+  | "syllabus_guidance"
+  | "lecture_outline"
+  | "assignment_clarification"
+  | "discussion_facilitation"
+  | "grading_assist"
+  | "announcements";
+
+export type CourseStaffMember = {
+  id: string;
+  name: string;
+  role: InstructionalRole;
+  email?: string;
+  notes?: string;
+};
+
+export type ProfessorMirror = {
+  id: string;
+  courseCode: string;
+  courseTitle: string;
+  term: string;
+  department?: string;
+  professorName: string;
+  professorEmail?: string;
+  coverageStatus: CoverageStatus;
+  unavailableReason?: string;
+  unavailableUntil?: string;
+  aiMirrorEnabled: boolean;
+  aiPersonaNotes: string;
+  syllabusOutline: string;
+  officeHours: string;
+  faqNotes: string;
+  capabilities: MirrorCapability[];
+  staff: CourseStaffMember[];
+  humanOversightRequired: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type OrgNode = {
+  id: string;
+  title: string;
+  level: OrgRoleLevel;
+  personName: string;
+  unit?: string;
+  email?: string;
+  phone?: string;
+  reportsToId: string | null;
+  notes?: string;
+  fte?: number;
+};
+
+export type WorkloadPriority = "critical" | "high" | "medium" | "low";
+export type WorkloadStatus = "backlog" | "in_progress" | "blocked" | "done";
+export type WorkloadCategory =
+  | "accreditation"
+  | "budget"
+  | "enrollment"
+  | "compliance"
+  | "hr"
+  | "facilities"
+  | "student_affairs"
+  | "academic_affairs"
+  | "it_systems"
+  | "advancement"
+  | "other";
+
+export type WorkloadItem = {
+  id: string;
+  title: string;
+  description?: string;
+  category: WorkloadCategory;
+  priority: WorkloadPriority;
+  status: WorkloadStatus;
+  assigneeId?: string;
+  dueDate?: string;
+  effortHours?: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ConnectorKind =
+  | "ellucian_banner"
+  | "powerfaids"
+  | "oracle"
+  | "sql_server"
+  | "postgres"
+  | "mysql"
+  | "peoplesoft"
+  | "colleague"
+  | "workday"
+  | "salesforce"
+  | "custom_api"
+  | "odbc"
+  | "other";
+
+export type ConnectorAuth =
+  | "none"
+  | "basic"
+  | "bearer"
+  | "oauth2"
+  | "api_key"
+  | "connection_string"
+  | "institutional_sso";
+
+export type ConnectorQueryTemplate = {
+  id: string;
+  label: string;
+  body: string;
+};
+
+export type SystemConnector = {
+  id: string;
+  name: string;
+  kind: ConnectorKind;
+  status: "planned" | "configured" | "connected" | "error" | "disabled";
+  endpointOrHost: string;
+  authType: ConnectorAuth;
+  connectionNotes?: string;
+  queryTemplates: ConnectorQueryTemplate[];
+  tags?: string[];
+  lastCheckedAt?: string;
+  createdAt: string;
+};
 
 export type HistoryEntry = {
   id: string;
@@ -98,4 +262,8 @@ export type AppState = {
   bannerStudentId: string;
   bannerTerms: BannerTerm[];
   bannerHolds: BannerHold[];
+  orgNodes: OrgNode[];
+  workload: WorkloadItem[];
+  connectors: SystemConnector[];
+  professorMirrors: ProfessorMirror[];
 };

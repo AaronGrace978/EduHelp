@@ -3,9 +3,13 @@ import { motion } from "framer-motion";
 import {
   ArrowRight,
   BookOpen,
+  Bot,
+  Cable,
+  ClipboardList,
   GraduationCap,
   HandHeart,
   History,
+  Network,
   Server,
   Star,
   Wallet,
@@ -13,6 +17,30 @@ import {
 import { useApp } from "@/context/AppContext";
 
 const MODULES = [
+  {
+    to: "/hierarchy",
+    icon: Network,
+    title: "Org hierarchy",
+    body: "President, Provost, Deans, Directors — the full campus leadership chart.",
+  },
+  {
+    to: "/workload",
+    icon: ClipboardList,
+    title: "Admin workload",
+    body: "Accreditation, enrollment, compliance, and cabinet-level work queues.",
+  },
+  {
+    to: "/harness",
+    icon: Cable,
+    title: "System harness",
+    body: "Plug into Banner, PowerFAIDS, Oracle, SQL, PeopleSoft, Workday, and more.",
+  },
+  {
+    to: "/mirror",
+    icon: Bot,
+    title: "Professor mirror",
+    body: "AI stand-in when faculty are out — plus TAs, graders, and SI leaders.",
+  },
   {
     to: "/colleges",
     icon: GraduationCap,
@@ -53,7 +81,7 @@ const MODULES = [
     to: "/history",
     icon: History,
     title: "Histories",
-    body: "One timeline across Banner, aid, books, and DSS.",
+    body: "One timeline across admin, systems, mirrors, aid, and DSS.",
   },
 ];
 
@@ -71,29 +99,30 @@ export function HomePage() {
           className="relative max-w-3xl"
         >
           <p className="text-xs font-semibold uppercase tracking-[0.22em] text-brass-300">
-            Lock in
+            Education administration
           </p>
           <h1 className="mt-4 font-display text-5xl font-semibold leading-[0.98] tracking-tight sm:text-6xl md:text-7xl">
             Aaron Grace,{" "}
             <span className="text-brass-300">M.Ed.</span>
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-100/90 sm:text-lg">
-            Banner, PowerFAIDS, disability support, Amazon textbooks, Rate My
-            Professor — unified around the campus you choose.
+            The go-to toolkit for the whole education ecosystem — hierarchy,
+            workload, Banner / Oracle / SQL harness, and professor mirrors with
+            AI + TA coverage.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              to="/colleges"
+              to="/hierarchy"
               className="btn-primary bg-brass-500 text-ink-950 hover:bg-brass-400"
             >
-              Select your college
+              Build your hierarchy
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
-              to="/banner"
+              to="/harness"
               className="btn-secondary border-white/20 bg-white/10 text-white hover:bg-white/15"
             >
-              Open Banner
+              Open system harness
             </Link>
           </div>
         </motion.div>
@@ -104,6 +133,13 @@ export function HomePage() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.15, duration: 0.8 }}
           className="pointer-events-none absolute -right-10 -top-10 hidden h-72 w-72 rounded-full border border-white/10 md:block"
+        />
+        <motion.div
+          aria-hidden
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.5 }}
+          transition={{ delay: 0.35, duration: 1 }}
+          className="pointer-events-none absolute bottom-6 right-10 hidden h-24 w-24 rounded-full border border-brass-300/30 md:block"
         />
       </section>
 
@@ -116,8 +152,8 @@ export function HomePage() {
             </h2>
             <p className="mt-2 max-w-xl text-sm text-ink-500">
               {college
-                ? `${[college.state, college.country].filter(Boolean).join(" · ")} — Banner, PowerFAIDS, books, and DSS personalize to this campus.`
-                : "Choose any college in the world to personalize Ellucian tools, books, RMP, and DSS letters."}
+                ? `${[college.state, college.country].filter(Boolean).join(" · ")} — hierarchy, harness, mirrors, Banner, and aid personalize here.`
+                : "Choose any college in the world to personalize administration and student tools."}
             </p>
           </div>
           <Link to="/colleges" className="btn-secondary">
@@ -127,9 +163,9 @@ export function HomePage() {
       </section>
 
       <section className="mt-12">
-        <p className="section-kicker">Toolkit</p>
+        <p className="section-kicker">Ecosystem toolkit</p>
         <h2 className="mt-2 font-display text-3xl font-semibold text-ink-950">
-          Everything in one place
+          Built for everyone on campus
         </h2>
         <div className="mt-6 divide-y divide-ink-200/80 border-y border-ink-200/80">
           {MODULES.map((mod, i) => (
@@ -137,7 +173,7 @@ export function HomePage() {
               key={mod.to}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.05 * i, duration: 0.35 }}
+              transition={{ delay: 0.04 * i, duration: 0.35 }}
             >
               <Link
                 to={mod.to}

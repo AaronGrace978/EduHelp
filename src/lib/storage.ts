@@ -14,13 +14,25 @@ export const defaultState = (): AppState => ({
   bannerStudentId: "",
   bannerTerms: [],
   bannerHolds: [],
+  orgNodes: [],
+  workload: [],
+  connectors: [],
+  professorMirrors: [],
 });
 
 export function loadState(): AppState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return defaultState();
-    return { ...defaultState(), ...JSON.parse(raw) } as AppState;
+    const parsed = JSON.parse(raw) as Partial<AppState>;
+    return {
+      ...defaultState(),
+      ...parsed,
+      orgNodes: parsed.orgNodes ?? [],
+      workload: parsed.workload ?? [],
+      connectors: parsed.connectors ?? [],
+      professorMirrors: parsed.professorMirrors ?? [],
+    };
   } catch {
     return defaultState();
   }
