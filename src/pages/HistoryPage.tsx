@@ -7,6 +7,7 @@ import type { HistoryKind } from "@/types";
 const LABELS: Record<HistoryKind, string> = {
   college: "College",
   powerfaids: "PowerFAIDS",
+  banner: "Banner",
   disability: "Disability",
   books: "Books",
   rmp: "RMP",
@@ -23,8 +24,8 @@ export function HistoryPage() {
           <p className="section-kicker">Activity</p>
           <h1 className="display-title mt-2">Histories</h1>
           <p className="mt-3 max-w-2xl text-ink-500">
-            Everything you lock in — campus picks, aid lines, DSS drafts, book
-            orders, and professor notes — lives in one timeline.
+            Everything you lock in — campus picks, Banner terms, aid lines, DSS drafts,
+            book orders, and professor notes — lives in one timeline.
           </p>
         </div>
         <button

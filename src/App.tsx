@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { HomePage } from "@/pages/HomePage";
 import { CollegesPage } from "@/pages/CollegesPage";
+import { BannerPage } from "@/pages/BannerPage";
 import { PowerFaidsPage } from "@/pages/PowerFaidsPage";
 import { DisabilityPage } from "@/pages/DisabilityPage";
 import { BooksPage } from "@/pages/BooksPage";
@@ -14,6 +15,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route index element={<HomePage />} />
         <Route path="colleges" element={<CollegesPage />} />
+        <Route path="banner" element={<BannerPage />} />
         <Route path="powerfaids" element={<PowerFaidsPage />} />
         <Route path="disability" element={<DisabilityPage />} />
         <Route path="books" element={<BooksPage />} />

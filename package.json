@@ -2,7 +2,7 @@
   "name": "aaron-grace-med",
   "private": true,
   "version": "1.0.0",
-  "description": "Aaron Grace, M.Ed. — the ultimate college toolkit: PowerFAIDS, disability support, Amazon textbooks, Rate My Professor, and every college worldwide.",
+  "description": "Aaron Grace, M.Ed. — the ultimate college toolkit: Ellucian Banner, PowerFAIDS, disability support, Amazon textbooks, Rate My Professor, and every college worldwide.",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -11,6 +11,7 @@ export type College = {
 export type HistoryKind =
   | "college"
   | "powerfaids"
+  | "banner"
   | "disability"
   | "books"
   | "rmp"
@@ -35,6 +36,22 @@ export type PowerFaidsAward = {
   amount: number;
   status: "pending" | "accepted" | "declined" | "disbursed";
   notes?: string;
+};
+
+export type BannerTerm = {
+  id: string;
+  term: string;
+  status: "upcoming" | "registering" | "enrolled" | "completed";
+  credits?: number;
+  notes?: string;
+};
+
+export type BannerHold = {
+  id: string;
+  label: string;
+  office?: string;
+  resolved: boolean;
+  createdAt: string;
 };
 
 export type BookOrder = {
@@ -77,4 +94,8 @@ export type AppState = {
   professors: ProfessorNote[];
   disabilityRequests: DisabilityRequest[];
   powerFaidsPortalUrl: string;
+  bannerPortalUrl: string;
+  bannerStudentId: string;
+  bannerTerms: BannerTerm[];
+  bannerHolds: BannerHold[];
 };

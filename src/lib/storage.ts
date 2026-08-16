@@ -10,6 +10,10 @@ export const defaultState = (): AppState => ({
   professors: [],
   disabilityRequests: [],
   powerFaidsPortalUrl: "",
+  bannerPortalUrl: "",
+  bannerStudentId: "",
+  bannerTerms: [],
+  bannerHolds: [],
 });
 
 export function loadState(): AppState {

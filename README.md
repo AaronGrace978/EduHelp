@@ -1,6 +1,6 @@
 # Aaron Grace, M.Ed.
 
-> The ultimate college toolkit — **Tauri 2** desktop app for PowerFAIDS, disability support, Amazon textbook orders, Rate My Professor, every college worldwide, and full activity histories.
+> The ultimate college toolkit — **Tauri 2** desktop app for Ellucian Banner, PowerFAIDS, disability support, Amazon textbook orders, Rate My Professor, every college worldwide, and full activity histories.
 
 Built by **Aaron Grace, M.Ed.**
 
@@ -11,11 +11,12 @@ Built by **Aaron Grace, M.Ed.**
 | Module | What it does |
 | ------ | ------------ |
 | **Colleges** | Search **10,000+** institutions across **200** countries and lock your active campus |
+| **Ellucian Banner** | Save/open Banner Self-Service, track terms & holds, run a registration checklist |
 | **PowerFAIDS** | Save your school aid portal URL, track award lines, and run an aid-year checklist |
 | **Disability Support** | College ADA / Section 504 accommodation packs + DSS letter drafts with request history |
 | **Amazon Books** | Search by title / author / ISBN / course, open Amazon, keep wishlist & order history |
 | **Rate My Professor** | Campus-aware professor search, open RMP, save personal ratings & notes |
-| **Histories** | One timeline across college picks, aid, DSS, books, and professors |
+| **Histories** | One timeline across college picks, Banner, aid, DSS, books, and professors |
 
 Selecting a college personalizes the rest of the app.
 

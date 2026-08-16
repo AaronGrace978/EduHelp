@@ -47,7 +47,8 @@ export function CollegesPage() {
       <p className="mt-3 max-w-2xl text-ink-500">
         Browse {loading ? "…" : colleges.length.toLocaleString()} institutions
         across {loading ? "…" : countries.length} countries. Selecting a campus
-        personalizes PowerFAIDS, books, Rate My Professor, and disability letters.
+        personalizes Banner, PowerFAIDS, books, Rate My Professor, and disability
+        letters.
       </p>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-[1fr_220px]">

@@ -9,6 +9,8 @@ import {
 } from "react";
 import type {
   AppState,
+  BannerHold,
+  BannerTerm,
   BookOrder,
   College,
   DisabilityRequest,
@@ -22,9 +24,19 @@ type AppContextValue = {
   state: AppState;
   setSelectedCollege: (college: College | null) => void;
   setPowerFaidsPortalUrl: (url: string) => void;
+  setBannerPortalUrl: (url: string) => void;
+  setBannerStudentId: (id: string) => void;
   addAward: (award: Omit<PowerFaidsAward, "id"> & { id?: string }) => void;
   updateAward: (id: string, patch: Partial<PowerFaidsAward>) => void;
   removeAward: (id: string) => void;
+  addBannerTerm: (term: Omit<BannerTerm, "id"> & { id?: string }) => void;
+  updateBannerTerm: (id: string, patch: Partial<BannerTerm>) => void;
+  removeBannerTerm: (id: string) => void;
+  addBannerHold: (
+    hold: Omit<BannerHold, "id" | "createdAt"> & { id?: string },
+  ) => void;
+  updateBannerHold: (id: string, patch: Partial<BannerHold>) => void;
+  removeBannerHold: (id: string) => void;
   addBook: (book: Omit<BookOrder, "id" | "createdAt"> & { id?: string }) => void;
   updateBook: (id: string, patch: Partial<BookOrder>) => void;
   removeBook: (id: string) => void;
@@ -73,6 +85,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, powerFaidsPortalUrl: url }));
   }, []);
 
+  const setBannerPortalUrl = useCallback((url: string) => {
+    setState((prev) => ({ ...prev, bannerPortalUrl: url }));
+  }, []);
+
+  const setBannerStudentId = useCallback((id: string) => {
+    setState((prev) => ({ ...prev, bannerStudentId: id }));
+  }, []);
+
   const addAward = useCallback(
     (award: Omit<PowerFaidsAward, "id"> & { id?: string }) => {
       setState((prev) => {
@@ -108,6 +128,87 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({
       ...prev,
       awards: prev.awards.filter((a) => a.id !== id),
+    }));
+  }, []);
+
+  const addBannerTerm = useCallback(
+    (term: Omit<BannerTerm, "id"> & { id?: string }) => {
+      setState((prev) => {
+        const row: BannerTerm = {
+          ...term,
+          id: term.id ?? crypto.randomUUID(),
+        };
+        return pushHistory(
+          { ...prev, bannerTerms: [row, ...prev.bannerTerms] },
+          {
+            kind: "banner",
+            title: `Banner term: ${row.term}`,
+            detail: row.status,
+            collegeName: prev.selectedCollege?.name,
+          },
+        );
+      });
+    },
+    [],
+  );
+
+  const updateBannerTerm = useCallback(
+    (id: string, patch: Partial<BannerTerm>) => {
+      setState((prev) => ({
+        ...prev,
+        bannerTerms: prev.bannerTerms.map((t) =>
+          t.id === id ? { ...t, ...patch } : t,
+        ),
+      }));
+    },
+    [],
+  );
+
+  const removeBannerTerm = useCallback((id: string) => {
+    setState((prev) => ({
+      ...prev,
+      bannerTerms: prev.bannerTerms.filter((t) => t.id !== id),
+    }));
+  }, []);
+
+  const addBannerHold = useCallback(
+    (hold: Omit<BannerHold, "id" | "createdAt"> & { id?: string }) => {
+      setState((prev) => {
+        const row: BannerHold = {
+          ...hold,
+          id: hold.id ?? crypto.randomUUID(),
+          createdAt: new Date().toISOString(),
+        };
+        return pushHistory(
+          { ...prev, bannerHolds: [row, ...prev.bannerHolds] },
+          {
+            kind: "banner",
+            title: `Banner hold: ${row.label}`,
+            detail: row.office,
+            collegeName: prev.selectedCollege?.name,
+          },
+        );
+      });
+    },
+    [],
+  );
+
+  const updateBannerHold = useCallback(
+    (id: string, patch: Partial<BannerHold>) => {
+      setState((prev) => ({
+        ...prev,
+        bannerHolds: prev.bannerHolds.map((h) =>
+          h.id === id ? { ...h, ...patch } : h,
+        ),
+      }));
+    },
+    [],
+  );
+
+  const removeBannerHold = useCallback((id: string) => {
+    setState((prev) => ({
+      ...prev,
+      bannerHolds: prev.bannerHolds.filter((h) => h.id !== id),
     }));
   }, []);
 
@@ -230,9 +331,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
       state,
       setSelectedCollege,
       setPowerFaidsPortalUrl,
+      setBannerPortalUrl,
+      setBannerStudentId,
       addAward,
       updateAward,
       removeAward,
+      addBannerTerm,
+      updateBannerTerm,
+      removeBannerTerm,
+      addBannerHold,
+      updateBannerHold,
+      removeBannerHold,
       addBook,
       updateBook,
       removeBook,
@@ -247,9 +356,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
       state,
       setSelectedCollege,
       setPowerFaidsPortalUrl,
+      setBannerPortalUrl,
+      setBannerStudentId,
       addAward,
       updateAward,
       removeAward,
+      addBannerTerm,
+      updateBannerTerm,
+      removeBannerTerm,
+      addBannerHold,
+      updateBannerHold,
+      removeBannerHold,
       addBook,
       updateBook,
       removeBook,
