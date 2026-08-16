@@ -2,9 +2,15 @@
 
 Official desktop builds ship as **GitHub Release** assets on tag `v1.0.0`.
 
-**Release page:** https://github.com/AaronGrace978/EduHelp/releases/tag/v1.0.0
+**Release page:** https://github.com/AaronGrace978/EduHelp/releases (draft **Aaron Grace, M.Ed. v1.0.0**)
 
-> Private repo: you must be signed into GitHub (or use a token) to download.
+Linux assets already attached to the draft:
+
+- [AaronGrace-MEd-1.0.0-amd64.AppImage](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/AaronGrace-MEd-1.0.0-amd64.AppImage) (preferred for Steam Deck)
+- [AaronGrace-MEd-1.0.0-amd64.deb](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/AaronGrace-MEd-1.0.0-amd64.deb)
+- [AaronGrace-MEd-1.0.0-1.x86_64.rpm](https://github.com/AaronGrace978/EduHelp/releases/download/v1.0.0/AaronGrace-MEd-1.0.0-1.x86_64.rpm)
+
+> Draft releases may use an `untagged-…` URL until published. Mac / Windows installers attach when the `release` GitHub Action finishes.
 
 ---
 
