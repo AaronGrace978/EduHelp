@@ -101,14 +101,23 @@ data = json.loads(sys.argv[1])
 assets = data.get("assets") or []
 prefer = ("appimage", "amd64", "x86_64", "linux")
 picked = None
+# Prefer CI-named AppImage, then any AppImage
+ranked = []
 for a in assets:
-    name = (a.get("name") or "").lower()
-    if name.endswith(".appimage"):
-        picked = a
-        if "amd64" in name or "x86_64" in name:
-            break
-if not picked:
+    name = (a.get("name") or "")
+    lower = name.lower()
+    if not lower.endswith(".appimage"):
+        continue
+    score = 0
+    if "amd64" in lower or "x86_64" in lower:
+        score += 2
+    if "aaron.grace" in lower or "aarongrace" in lower:
+        score += 1
+    ranked.append((score, a))
+ranked.sort(key=lambda t: t[0], reverse=True)
+if not ranked:
     raise SystemExit("no AppImage asset on release")
+picked = ranked[0][1]
 print(picked["url"])
 print(picked.get("name") or "AaronGrace-MEd.AppImage")
 PY
